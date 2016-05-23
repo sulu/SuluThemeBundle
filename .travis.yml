@@ -1,0 +1,25 @@
+sudo: false
+
+language: php
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+    - downloads
+
+matrix:
+  include:
+    - php: 5.5
+    - php: 7.0
+
+before_script:
+  - phpenv config-rm xdebug.ini
+  - composer self-update
+  - composer install  --prefer-dist --no-interaction
+
+script:
+  - vendor/bin/phpunit
+
+notifications:
+  slack:
+    secure: "Gd3/1e0pBKvJv1UhWpBkWijJpmSWlarg6uPBJO0h4z1IpkZjd++jOjhmOQ7n+yMfuapQuJTcVOK0yIWu7orJoGAKFkBlMEIrLk1xMAG9phjjMLUO0FWgcQ3eVW5mTyfMBtClz4OL5wXckw17ohtXHDK8qnI0Hz9Qj8Rqgf2OZhM="

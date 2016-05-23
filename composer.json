@@ -12,8 +12,23 @@
         }
     ],
     "require": {
-        "php": "^5.5 || ^7.0"
+        "php": "^5.5 || ^7.0",
+        "liip/theme-bundle": "1.3.*"
     },
+    "require-dev": {
+        "sulu/sulu": "dev-feature/extract-theme-bundle",
+        "jackalope/jackalope-jackrabbit": "~1.2.0",
+        "jackalope/jackalope-doctrine-dbal": "~1.2.0",
+        "sulu/document-manager": "@dev",
+        "symfony/symfony": "~2.8",
+        "phpunit/phpunit": ">=4.8.0"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/wachterjohannes/sulu"
+        }
+    ],
     "autoload": {
         "psr-0": {
             "Sulu\\Bundle\\ThemeBundle": ""
@@ -21,4 +36,3 @@
     },
     "target-dir": "Sulu/Bundle/ThemeBundle"
 }
-
