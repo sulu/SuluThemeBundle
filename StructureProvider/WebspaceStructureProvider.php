@@ -62,7 +62,7 @@ class WebspaceStructureProvider extends BaseWebspaceStructureProvider
         $webspace = $this->webspaceManager->findWebspaceByKey($webspaceKey);
 
         if (null !== $webspace->getTheme()) {
-            $this->activeTheme->setName($webspace->getTheme()->getKey());
+            $this->activeTheme->setName($webspace->getTheme());
         }
 
         $structures = [];

@@ -13,7 +13,7 @@ namespace Sulu\Bundle\ThemeBundle\EventListener;
 
 use Liip\ThemeBundle\ActiveTheme;
 use Sulu\Bundle\PreviewBundle\Preview\Events\PreRenderEvent;
-use Sulu\Component\Webspace\Analyzer\RequestAnalyzerInterface;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
 /**
  * Listener which applies the configured theme.
@@ -21,38 +21,34 @@ use Sulu\Component\Webspace\Analyzer\RequestAnalyzerInterface;
 class SetThemeEventListener
 {
     /**
-     * @var RequestAnalyzerInterface
-     */
-    private $requestAnalyzer;
-
-    /**
      * @var ActiveTheme
      */
     private $activeTheme;
 
     /**
-     * @param RequestAnalyzerInterface $requestAnalyzer
      * @param ActiveTheme $activeTheme
      */
-    public function __construct(RequestAnalyzerInterface $requestAnalyzer, ActiveTheme $activeTheme)
+    public function __construct(ActiveTheme $activeTheme)
     {
-        $this->requestAnalyzer = $requestAnalyzer;
         $this->activeTheme = $activeTheme;
     }
 
     /**
      * Set the active theme if there is a portal.
+     *
+     * @param GetResponseEvent $event
      */
-    public function setActiveThemeOnEngineInitialize()
+    public function setActiveThemeOnRequest(GetResponseEvent $event)
     {
-        $portal = $this->requestAnalyzer->getPortal();
-
-        if (null === $portal || null === $portal->getWebspace()->getTheme()) {
+        if (!$event->isMasterRequest()
+            || null === ($attributes = $event->getRequest()->get('_sulu'))
+            || null === ($webspace = $attributes->getAttribute('webspace'))
+            || null === ($theme = $webspace->getTheme())
+        ) {
             return;
         }
 
-        $themeKey = $portal->getWebspace()->getTheme()->getKey();
-        $this->activeTheme->setName($themeKey);
+        $this->activeTheme->setName($theme);
     }
 
     /**
@@ -62,6 +58,6 @@ class SetThemeEventListener
      */
     public function setActiveThemeOnPreviewPreRender(PreRenderEvent $event)
     {
-        $this->activeTheme->setName($event->getAttribute('webspace')->getTheme()->getKey());
+        $this->activeTheme->setName($event->getAttribute('webspace')->getTheme());
     }
 }

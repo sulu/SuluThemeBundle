@@ -5,7 +5,6 @@
     <services>
         <service id="sulu_website.event_listener.set_theme"
                  class="Sulu\Bundle\ThemeBundle\EventListener\SetThemeEventListener">
-            <argument type="service" id="sulu_core.webspace.request_analyzer"/>
             <argument type="service" id="liip_theme.active_theme"/>
 
             <tag name="kernel.event_listener" event="%sulu_preview.events.pre-render%"

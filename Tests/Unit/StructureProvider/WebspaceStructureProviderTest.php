@@ -27,11 +27,10 @@ class WebspaceStructureProviderTest extends \PHPUnit_Framework_TestCase
             $this->generateStructure('t3', 'MyBundle:default:t3'),
         ];
 
-        $theme = $this->prophesize('Sulu\Component\Webspace\Theme');
-        $theme->getKey()->willReturn('test');
+        $theme = 'test';
 
         $webspace = $this->prophesize('Sulu\Component\Webspace\Webspace');
-        $webspace->getTheme()->willReturn($theme->reveal());
+        $webspace->getTheme()->willReturn($theme);
 
         $twigLoader = $this->prophesize('\Twig_LoaderInterface');
         $twigLoader->getSource('MyBundle:default:t1.html.twig')->willThrow(new \Twig_Error_Loader('Missing template'));

@@ -14,21 +14,27 @@ use Liip\ThemeBundle\ActiveTheme;
 use Sulu\Bundle\PreviewBundle\Preview\Events\PreRenderEvent;
 use Sulu\Bundle\ThemeBundle\EventListener\SetThemeEventListener;
 use Sulu\Component\Webspace\Analyzer\Attributes\RequestAttributes;
-use Sulu\Component\Webspace\Analyzer\RequestAnalyzerInterface;
 use Sulu\Component\Webspace\Theme;
 use Sulu\Component\Webspace\Webspace;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
 class SetThemeEventListenerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var ActiveTheme
      */
-    protected $activeTheme;
+    private $activeTheme;
 
     /**
-     * @var RequestAnalyzerInterface
+     * @var string
      */
-    protected $requestAnalyzer;
+    private $theme = 'test';
+
+    /**
+     * @var Webspace
+     */
+    private $webspace;
 
     /**
      * @var SetThemeEventListener
@@ -37,61 +43,80 @@ class SetThemeEventListenerTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->requestAnalyzer = $this->getMock('Sulu\Component\Webspace\Analyzer\RequestAnalyzerInterface');
-        $this->activeTheme = $this->getMockBuilder('Liip\ThemeBundle\ActiveTheme')
-            ->disableOriginalConstructor()->getMock();
+        $this->activeTheme = $this->prophesize(ActiveTheme::class);
+        $this->webspace = $this->prophesize(Webspace::class);
+        $this->webspace->getTheme()->willReturn($this->theme);
 
-        $this->portal = $this->getMock('Sulu\Component\Webspace\Portal');
-        $this->webspace = $this->getMock('Sulu\Component\Webspace\Webspace');
-        $this->theme = $this->getMock('Sulu\Component\Webspace\Theme');
-        $this->event = $this->getMockBuilder('Symfony\Component\HttpKernel\Event\GetResponseEvent')
-            ->disableOriginalConstructor()->getMock();
-
-        $this->listener = new SetThemeEventListener($this->requestAnalyzer, $this->activeTheme);
+        $this->listener = new SetThemeEventListener($this->activeTheme->reveal());
     }
 
     public function testEventListener()
     {
-        $this->requestAnalyzer->expects($this->once())
-            ->method('getPortal')
-            ->will($this->returnValue($this->portal));
-        $this->portal->expects($this->any())
-            ->method('getWebspace')
-            ->will($this->returnValue($this->webspace));
-        $this->webspace->expects($this->any())
-            ->method('getTheme')
-            ->will($this->returnValue($this->theme));
-        $this->theme->expects($this->once())
-            ->method('getKey')
-            ->will($this->returnValue('test'));
-        $this->activeTheme->expects($this->once())
-            ->method('setName')
-            ->with('test');
+        $request = $this->prophesize(Request::class);
+        $attributes = $this->prophesize(RequestAttributes::class);
+        $attributes->getAttribute('webspace')->willReturn($this->webspace->reveal());
+        $request->get('_sulu')->willReturn($attributes->reveal());
 
-        $this->listener->setActiveThemeOnEngineInitialize();
+        $event = $this->prophesize(GetResponseEvent::class);
+        $event->getRequest()->willReturn($request->reveal());
+        $event->isMasterRequest()->willReturn(true);
+
+        $this->activeTheme->setName($this->theme)->shouldBeCalled();
+
+        $this->listener->setActiveThemeOnRequest($event->reveal());
     }
 
     public function testEventListenerNotMaster()
     {
-        $this->requestAnalyzer->expects($this->once())
-            ->method('getPortal')
-            ->willReturn(null);
-        $this->webspace->expects($this->never())
-            ->method('getTheme');
+        $request = $this->prophesize(Request::class);
+        $event = $this->prophesize(GetResponseEvent::class);
+        $event->isMasterRequest()->willReturn(false);
+        $event->getRequest()->willReturn($request->reveal());
 
-        $this->listener->setActiveThemeOnEngineInitialize();
+        $this->activeTheme->setName($this->theme)->shouldNotBeCalled();
+
+        $this->listener->setActiveThemeOnRequest($event->reveal());
+    }
+
+    public function testEventListenerNoWebspace()
+    {
+        $request = $this->prophesize(Request::class);
+        $attributes = $this->prophesize(RequestAttributes::class);
+        $attributes->getAttribute('webspace')->willReturn(null);
+        $request->get('_sulu')->willReturn($attributes->reveal());
+
+        $event = $this->prophesize(GetResponseEvent::class);
+        $event->getRequest()->willReturn($request->reveal());
+        $event->isMasterRequest()->willReturn(true);
+
+        $this->activeTheme->setName($this->theme)->shouldNotBeCalled();
+
+        $this->listener->setActiveThemeOnRequest($event->reveal());
+    }
+
+    public function testEventListenerNoAttributes()
+    {
+        $request = $this->prophesize(Request::class);
+        $request->get('_sulu')->willReturn(null);
+
+        $event = $this->prophesize(GetResponseEvent::class);
+        $event->getRequest()->willReturn($request->reveal());
+        $event->isMasterRequest()->willReturn(true);
+
+        $this->activeTheme->setName($this->theme)->shouldNotBeCalled();
+
+        $this->listener->setActiveThemeOnRequest($event->reveal());
     }
 
     public function testEventListenerOnPreview()
     {
-        $webspace = new Webspace();
-        $theme = new Theme('test');
-        $webspace->setTheme($theme);
+        $attributes = $this->prophesize(RequestAttributes::class);
+        $attributes->getAttribute('webspace', null)->willReturn($this->webspace->reveal());
 
-        $this->activeTheme->expects($this->once())->method('setName')->with('test');
+        $this->activeTheme->setName($this->theme)->shouldBeCalled();
 
         $this->listener->setActiveThemeOnPreviewPreRender(
-            new PreRenderEvent(new RequestAttributes(['webspace' => $webspace]))
+            new PreRenderEvent($attributes->reveal())
         );
     }
 }
