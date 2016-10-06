@@ -1,7 +1,7 @@
 CHANGELOG for Sulu
 ==================
 
-* dev-develop
+* 1.1.0 (2016-10-06)
     * ENHANCEMENT #2 Refactored ImageFormatCompilerPass to meet the requirements of the new image formats definition
 
 * 1.0.0 (2016-07-22)
