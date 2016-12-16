@@ -1,6 +1,9 @@
 CHANGELOG for Sulu
 ==================
 
+* dev-develop
+    * ENHANCEMENT #5 Updated composer dependencies
+
 * 1.1.1 (2016-11-24)
     * BUGFIX  #- Updated LiipThemeBundle
 
