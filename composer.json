@@ -15,7 +15,7 @@
         "liip/theme-bundle": "~1.4"
     },
     "require-dev": {
-        "sulu/sulu": "~1.4",
+        "sulu/sulu": "dev-develop",
         "jackalope/jackalope-jackrabbit": "~1.2",
         "jackalope/jackalope-doctrine-dbal": "~1.2",
         "sulu/document-manager": "@dev",
