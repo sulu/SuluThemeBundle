@@ -15,7 +15,7 @@ use Sulu\Bundle\MediaBundle\DependencyInjection\AbstractImageFormatCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
- * Class ImageFormatCompilerPass.
+ * This compiler pass loads all image formats defined in the configuration files in all the themes.
  */
 class ImageFormatCompilerPass extends AbstractImageFormatCompilerPass
 {
