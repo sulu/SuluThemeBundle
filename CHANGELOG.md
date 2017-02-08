@@ -3,6 +3,7 @@ CHANGELOG for Sulu
 
 * dev-develop
     * ENHANCEMENT #5 Updated composer dependencies
+    * BUGFIX      #4 Removed duplicated logic already existing in Sulu
 
 * 1.1.1 (2016-11-24)
     * BUGFIX  #- Updated LiipThemeBundle

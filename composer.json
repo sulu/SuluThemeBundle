@@ -12,10 +12,10 @@
     ],
     "require": {
         "php": "~5.5 || ~7.0",
-        "liip/theme-bundle": "~1.4"
+        "liip/theme-bundle": "~1.4",
+        "sulu/sulu": "dev-develop"
     },
     "require-dev": {
-        "sulu/sulu": "~1.4",
         "jackalope/jackalope-jackrabbit": "~1.2",
         "jackalope/jackalope-doctrine-dbal": "~1.2",
         "sulu/document-manager": "@dev",
