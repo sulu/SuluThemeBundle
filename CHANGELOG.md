@@ -1,7 +1,7 @@
 CHANGELOG for Sulu
 ==================
 
-* dev-develop
+* 1.2.0-RC1 (2017-02-13)
     * ENHANCEMENT #5 Updated composer dependencies
     * BUGFIX      #4 Removed duplicated logic already existing in Sulu
 
