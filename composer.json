@@ -13,12 +13,11 @@
     "require": {
         "php": "~5.5 || ~7.0",
         "liip/theme-bundle": "~1.4",
-        "sulu/sulu": "1.5.*@RC"
+        "sulu/sulu": "1.5.*"
     },
     "require-dev": {
         "jackalope/jackalope-jackrabbit": "~1.2",
         "jackalope/jackalope-doctrine-dbal": "~1.2",
-        "sulu/document-manager": "@RC",
         "symfony/symfony": "~2.8 || ~3.0",
         "phpunit/phpunit": "~4.8 || ~5.0"
     },
