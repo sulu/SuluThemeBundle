@@ -69,11 +69,15 @@ class SetThemeEventListenerTest extends \PHPUnit_Framework_TestCase
     public function testEventListenerNotMaster()
     {
         $request = $this->prophesize(Request::class);
-        $event = $this->prophesize(GetResponseEvent::class);
-        $event->isMasterRequest()->willReturn(false);
-        $event->getRequest()->willReturn($request->reveal());
+        $attributes = $this->prophesize(RequestAttributes::class);
+        $attributes->getAttribute('webspace')->willReturn($this->webspace->reveal());
+        $request->get('_sulu')->willReturn($attributes->reveal());
 
-        $this->activeTheme->setName($this->theme)->shouldNotBeCalled();
+        $event = $this->prophesize(GetResponseEvent::class);
+        $event->getRequest()->willReturn($request->reveal());
+        $event->isMasterRequest()->willReturn(false);
+
+        $this->activeTheme->setName($this->theme)->shouldBeCalled();
 
         $this->listener->setActiveThemeOnRequest($event->reveal());
     }

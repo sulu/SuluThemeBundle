@@ -40,8 +40,7 @@ class SetThemeEventListener
      */
     public function setActiveThemeOnRequest(GetResponseEvent $event)
     {
-        if (!$event->isMasterRequest()
-            || null === ($attributes = $event->getRequest()->get('_sulu'))
+        if (null === ($attributes = $event->getRequest()->get('_sulu'))
             || null === ($webspace = $attributes->getAttribute('webspace'))
             || null === ($theme = $webspace->getTheme())
         ) {
