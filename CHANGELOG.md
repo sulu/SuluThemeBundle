@@ -1,6 +1,9 @@
 CHANGELOG for Sulu
 ==================
 
+* dev-master
+    * BUGFIX      #6 Fixed setting a theme for exception pages
+
 * 1.2.0-RC1 (2017-02-13)
     * ENHANCEMENT #5 Updated composer dependencies
     * BUGFIX      #4 Removed duplicated logic already existing in Sulu
