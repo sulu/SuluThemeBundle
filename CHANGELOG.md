@@ -1,7 +1,7 @@
 CHANGELOG for Sulu
 ==================
 
-* dev-master
+* 1.2.1
     * BUGFIX      #6 Fixed setting a theme for exception pages
 
 * 1.2.0-RC1 (2017-02-13)
