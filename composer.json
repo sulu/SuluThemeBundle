@@ -13,7 +13,7 @@
     "require": {
         "php": "~5.5 || ~7.0",
         "liip/theme-bundle": "~1.4",
-        "sulu/sulu": "^1.5"
+        "sulu/sulu": "^2.0"
     },
     "require-dev": {
         "jackalope/jackalope-jackrabbit": "~1.2",
@@ -24,6 +24,12 @@
     "autoload": {
         "psr-4": {
             "Sulu\\Bundle\\ThemeBundle\\": ""
+        }
+    },
+    "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+            "dev-develop": "2.0-dev"
         }
     }
 }

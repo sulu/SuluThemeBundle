@@ -9,14 +9,18 @@ cache:
 
 matrix:
   include:
-    - php: 5.5
-    - php: 7.0
+    - php: 7.1
+      env:
+        - COMPOSER_FLAGS="--prefer-lowest --prefer-stable --prefer-dist --no-interaction"
+    - php: 7.2
+      env:
+        - COMPOSER_FLAGS="--prefer-dist --no-interaction"
 
 before_script:
   - echo "memory_limit=2048M" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - phpenv config-rm xdebug.ini
   - composer self-update
-  - composer install  --prefer-dist --no-interaction
+  - composer update $COMPOSER_FLAGS
 
 script:
   - vendor/bin/phpunit
