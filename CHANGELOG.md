@@ -1,7 +1,12 @@
 CHANGELOG for Sulu
 ==================
 
-* 1.2.1
+* 1.3.1
+    * ENHANCEMENT #- Updated sulu requirement
+
+* 1.3.0 (2017-07-28)
+
+* 1.2.1 (2017-05-12)
     * BUGFIX      #6 Fixed setting a theme for exception pages
 
 * 1.2.0-RC1 (2017-02-13)
