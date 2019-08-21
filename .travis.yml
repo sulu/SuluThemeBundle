@@ -12,7 +12,7 @@ matrix:
     - php: 7.1
       env:
         - COMPOSER_FLAGS="--prefer-lowest --prefer-stable --prefer-dist --no-interaction"
-    - php: 7.2
+    - php: 7.3
       env:
         - COMPOSER_FLAGS="--prefer-dist --no-interaction"
 
