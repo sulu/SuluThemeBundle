@@ -13,7 +13,7 @@
     "require": {
         "php": "~5.5 || ~7.0",
         "liip/theme-bundle": "~1.4",
-        "sulu/sulu": "^2.0"
+        "sulu/sulu": "^2.0 || dev-develop"
     },
     "require-dev": {
         "jackalope/jackalope-jackrabbit": "~1.2",
