@@ -15,7 +15,6 @@ matrix:
     - php: 7.3
 
 before_install:
-  - phpenv config-rm xdebug.ini
   - | # enable swap
     if [[ $ENABLE_SWAP == 'true' ]]; then
         sudo fallocate -l 4G /swapfile
@@ -27,6 +26,7 @@ before_install:
   - echo "memory_limit=4096M" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
 
 before_script:
+  - phpenv config-rm xdebug.ini
   - composer self-update
   - COMPOSER_MEMORY_LIMIT=-1 travis_retry composer install --prefer-dist --no-interaction
 
