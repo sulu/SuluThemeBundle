@@ -1,7 +1,7 @@
 CHANGELOG for Sulu
 ==================
 
-* 1.3.3
+* 1.4.0-RC1
     * ENHANCEMENT #- Updated composer requirement for sulu 2.0
 
 * 1.3.2
