@@ -11,6 +11,7 @@
 namespace Sulu\Bundle\ThemeBundle\Tests\Unit\EventListener;
 
 use Liip\ThemeBundle\ActiveTheme;
+use PHPUnit\Framework\TestCase;
 use Sulu\Bundle\PreviewBundle\Preview\Events\PreRenderEvent;
 use Sulu\Bundle\ThemeBundle\EventListener\SetThemeEventListener;
 use Sulu\Component\Webspace\Analyzer\Attributes\RequestAttributes;
@@ -19,7 +20,7 @@ use Sulu\Component\Webspace\Webspace;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
-class SetThemeEventListenerTest extends \PHPUnit_Framework_TestCase
+class SetThemeEventListenerTest extends TestCase
 {
     /**
      * @var ActiveTheme
@@ -41,7 +42,7 @@ class SetThemeEventListenerTest extends \PHPUnit_Framework_TestCase
      */
     private $listener;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->activeTheme = $this->prophesize(ActiveTheme::class);
         $this->webspace = $this->prophesize(Webspace::class);

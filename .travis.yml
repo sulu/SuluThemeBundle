@@ -9,26 +9,20 @@ cache:
 
 matrix:
   include:
-    - php: 5.5
+    - php: 7.2
       env:
-        - ENABLE_SWAP=true
+        - COMPOSER_FLAGS="--prefer-lowest --prefer-dist --no-interaction"
     - php: 7.3
+      env:
+        - COMPOSER_FLAGS="--prefer-dist --no-interaction"
 
 before_install:
-  - | # enable swap
-    if [[ $ENABLE_SWAP == 'true' ]]; then
-        sudo fallocate -l 4G /swapfile
-        sudo chmod 600 /swapfile
-        sudo mkswap /swapfile
-        sudo swapon /swapfile
-        sudo sysctl vm.swappiness=10
-    fi
   - echo "memory_limit=4096M" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
 
 before_script:
   - phpenv config-rm xdebug.ini
   - composer self-update
-  - COMPOSER_MEMORY_LIMIT=-1 travis_retry composer install --prefer-dist --no-interaction
+  - COMPOSER_MEMORY_LIMIT=-1 travis_retry composer update $COMPOSER_FLAGS
 
 script:
   - vendor/bin/phpunit
