@@ -12,10 +12,11 @@
 namespace Sulu\Bundle\ThemeBundle\Tests\Unit\StructureProvider;
 
 use Doctrine\Common\Cache\ArrayCache;
+use PHPUnit\Framework\TestCase;
 use Sulu\Bundle\ThemeBundle\StructureProvider\WebspaceStructureProvider;
 use Sulu\Component\Content\Compat\StructureInterface;
 
-class WebspaceStructureProviderTest extends \PHPUnit_Framework_TestCase
+class WebspaceStructureProviderTest extends TestCase
 {
     public function testGetStructures()
     {

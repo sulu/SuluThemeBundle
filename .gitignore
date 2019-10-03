@@ -13,3 +13,4 @@
 
 # phpunit
 phpunit.xml
+.phpunit.result.cache
