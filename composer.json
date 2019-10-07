@@ -3,7 +3,10 @@
     "type": "sulu-bundle",
     "description": "The Sulu Bundle which provides themes",
     "license": "MIT",
-    "keywords": ["sulu", "theme"],
+    "keywords": [
+        "sulu",
+        "theme"
+    ],
     "authors": [
         {
             "name": "Sulu Community",
@@ -33,5 +36,13 @@
         "psr-4": {
             "Sulu\\Bundle\\ThemeBundle\\": ""
         }
+    },
+    "scripts": {
+        "phpstan": [
+            "vendor/bin/phpstan analyse"
+        ],
+        "phpunit": [
+            "vendor/bin/phpunit"
+        ]
     }
 }

@@ -15,6 +15,7 @@ matrix:
     - php: 7.3
       env:
         - COMPOSER_FLAGS="--prefer-dist --no-interaction"
+        - PHPSTAN=true
 
 before_install:
   - echo "memory_limit=4096M" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
@@ -25,8 +26,5 @@ before_script:
   - COMPOSER_MEMORY_LIMIT=-1 travis_retry composer update $COMPOSER_FLAGS
 
 script:
-  - vendor/bin/phpunit
-
-notifications:
-  slack:
-    secure: "Gd3/1e0pBKvJv1UhWpBkWijJpmSWlarg6uPBJO0h4z1IpkZjd++jOjhmOQ7n+yMfuapQuJTcVOK0yIWu7orJoGAKFkBlMEIrLk1xMAG9phjjMLUO0FWgcQ3eVW5mTyfMBtClz4OL5wXckw17ohtXHDK8qnI0Hz9Qj8Rqgf2OZhM="
+  - if [[ $PHPSTAN = true ]]; then composer phpstan; fi
+  - composer phpunit
