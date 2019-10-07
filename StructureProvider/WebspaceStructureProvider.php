@@ -61,14 +61,19 @@ class WebspaceStructureProvider extends BaseWebspaceStructureProvider
         $before = $this->activeTheme->getName();
         $webspace = $this->webspaceManager->findWebspaceByKey($webspaceKey);
 
+        if (!$webspace) {
+            return [];
+        }
+
+
         if (null !== $webspace->getTheme()) {
             $this->activeTheme->setName($webspace->getTheme());
         }
 
         $structures = [];
         $keys = [];
+        /** @var PageBridge $page */
         foreach ($this->structureManager->getStructures() as $page) {
-            /* @var PageBridge $page */
             $template = sprintf('%s.html.twig', $page->getView());
             if ($this->templateExists($template)) {
                 $keys[] = $page->getKey();

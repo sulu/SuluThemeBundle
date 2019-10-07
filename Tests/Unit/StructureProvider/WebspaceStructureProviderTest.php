@@ -18,7 +18,7 @@ use Sulu\Component\Content\Compat\StructureInterface;
 
 class WebspaceStructureProviderTest extends TestCase
 {
-    public function testGetStructures()
+    public function testGetStructures(): void
     {
         $cache = new ArrayCache();
 
@@ -69,7 +69,7 @@ class WebspaceStructureProviderTest extends TestCase
         $this->assertEquals(['t2'], $cache->fetch('sulu_io'));
     }
 
-    public function testGetStructuresCached()
+    public function testGetStructuresCached(): void
     {
         $cache = new ArrayCache();
         $cache->save('sulu_io', ['t1', 't3']);
@@ -118,7 +118,7 @@ class WebspaceStructureProviderTest extends TestCase
      *
      * @return StructureInterface
      */
-    private function generateStructure($key, $view)
+    private function generateStructure(string $key, string $view): StructureInterface
     {
         $mock = $this->prophesize('Sulu\Component\Content\Compat\Structure\PageBridge');
 

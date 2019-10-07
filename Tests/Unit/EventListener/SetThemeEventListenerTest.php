@@ -12,6 +12,7 @@ namespace Sulu\Bundle\ThemeBundle\Tests\Unit\EventListener;
 
 use Liip\ThemeBundle\ActiveTheme;
 use PHPUnit\Framework\TestCase;
+use Prophecy\Prophecy\ObjectProphecy;
 use Sulu\Bundle\PreviewBundle\Preview\Events\PreRenderEvent;
 use Sulu\Bundle\ThemeBundle\EventListener\SetThemeEventListener;
 use Sulu\Component\Webspace\Analyzer\Attributes\RequestAttributes;
@@ -23,7 +24,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 class SetThemeEventListenerTest extends TestCase
 {
     /**
-     * @var ActiveTheme
+     * @var ObjectProphecy>
      */
     private $activeTheme;
 
@@ -33,7 +34,7 @@ class SetThemeEventListenerTest extends TestCase
     private $theme = 'test';
 
     /**
-     * @var Webspace
+     * @var ObjectProphecy>
      */
     private $webspace;
 
@@ -51,7 +52,7 @@ class SetThemeEventListenerTest extends TestCase
         $this->listener = new SetThemeEventListener($this->activeTheme->reveal());
     }
 
-    public function testEventListener()
+    public function testEventListener(): void
     {
         $request = $this->prophesize(Request::class);
         $attributes = $this->prophesize(RequestAttributes::class);
@@ -67,7 +68,7 @@ class SetThemeEventListenerTest extends TestCase
         $this->listener->setActiveThemeOnRequest($event->reveal());
     }
 
-    public function testEventListenerNotMaster()
+    public function testEventListenerNotMaster(): void
     {
         $request = $this->prophesize(Request::class);
         $attributes = $this->prophesize(RequestAttributes::class);
@@ -83,7 +84,7 @@ class SetThemeEventListenerTest extends TestCase
         $this->listener->setActiveThemeOnRequest($event->reveal());
     }
 
-    public function testEventListenerNoWebspace()
+    public function testEventListenerNoWebspace(): void
     {
         $request = $this->prophesize(Request::class);
         $attributes = $this->prophesize(RequestAttributes::class);
@@ -99,7 +100,7 @@ class SetThemeEventListenerTest extends TestCase
         $this->listener->setActiveThemeOnRequest($event->reveal());
     }
 
-    public function testEventListenerNoAttributes()
+    public function testEventListenerNoAttributes(): void
     {
         $request = $this->prophesize(Request::class);
         $request->get('_sulu')->willReturn(null);
@@ -113,7 +114,7 @@ class SetThemeEventListenerTest extends TestCase
         $this->listener->setActiveThemeOnRequest($event->reveal());
     }
 
-    public function testEventListenerOnPreview()
+    public function testEventListenerOnPreview(): void
     {
         $attributes = $this->prophesize(RequestAttributes::class);
         $attributes->getAttribute('webspace', null)->willReturn($this->webspace->reveal());
