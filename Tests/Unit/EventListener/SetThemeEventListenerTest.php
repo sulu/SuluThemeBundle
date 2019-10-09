@@ -24,7 +24,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 class SetThemeEventListenerTest extends TestCase
 {
     /**
-     * @var ObjectProphecy>
+     * @var ObjectProphecy|ActiveTheme
      */
     private $activeTheme;
 
@@ -34,7 +34,7 @@ class SetThemeEventListenerTest extends TestCase
     private $theme = 'test';
 
     /**
-     * @var ObjectProphecy>
+     * @var ObjectProphecy|Webspace
      */
     private $webspace;
 
