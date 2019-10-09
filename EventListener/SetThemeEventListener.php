@@ -3,7 +3,7 @@
 /*
  * This file is part of Sulu.
  *
- * (c) MASSIVE ART WebServices GmbH
+ * (c) Sulu GmbH
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -38,7 +38,7 @@ class SetThemeEventListener
      *
      * @param GetResponseEvent $event
      */
-    public function setActiveThemeOnRequest(GetResponseEvent $event)
+    public function setActiveThemeOnRequest(GetResponseEvent $event): void
     {
         if (null === ($attributes = $event->getRequest()->get('_sulu'))
             || null === ($webspace = $attributes->getAttribute('webspace'))
@@ -55,7 +55,7 @@ class SetThemeEventListener
      *
      * @param PreRenderEvent $event
      */
-    public function setActiveThemeOnPreviewPreRender(PreRenderEvent $event)
+    public function setActiveThemeOnPreviewPreRender(PreRenderEvent $event): void
     {
         $this->activeTheme->setName($event->getAttribute('webspace')->getTheme());
     }

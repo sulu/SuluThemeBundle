@@ -3,7 +3,7 @@
 /*
  * This file is part of Sulu.
  *
- * (c) MASSIVE ART WebServices GmbH
+ * (c) Sulu GmbH
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -11,6 +11,7 @@
 
 namespace Sulu\Bundle\ThemeBundle\DependencyInjection\CompilerPass;
 
+use Liip\ThemeBundle\ActiveTheme;
 use Sulu\Bundle\MediaBundle\DependencyInjection\AbstractImageFormatCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -26,6 +27,7 @@ class ImageFormatCompilerPass extends AbstractImageFormatCompilerPass
     {
         $files = [];
 
+        /** @var ActiveTheme $activeTheme */
         $activeTheme = $container->get('liip_theme.active_theme');
         $bundles = $container->getParameter('kernel.bundles');
         $configPath = 'config/image-formats.xml';
@@ -33,9 +35,15 @@ class ImageFormatCompilerPass extends AbstractImageFormatCompilerPass
         foreach ($activeTheme->getThemes() as $theme) {
             foreach ($bundles as $bundleName => $bundle) {
                 $bundleReflection = new \ReflectionClass($bundle);
+                $fileName = $bundleReflection->getFileName();
+
+                if (!$fileName) {
+                    continue;
+                }
+
                 $path = sprintf(
                     '%s/Resources/themes/%s/%s',
-                    dirname($bundleReflection->getFileName()),
+                    dirname($fileName),
                     $theme,
                     $configPath
                 );

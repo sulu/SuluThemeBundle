@@ -1,0 +1,14 @@
+includes:
+    - vendor/jangregor/phpstan-prophecy/src/extension.neon
+    - vendor/phpstan/phpstan-symfony/extension.neon
+    - vendor/phpstan/phpstan-phpunit/extension.neon
+    - vendor/phpstan/phpstan-phpunit/rules.neon
+    - vendor/thecodingmachine/phpstan-strict-rules/phpstan-strict-rules.neon
+
+parameters:
+    paths:
+        - .
+    level: max
+    excludes_analyse:
+        - %currentWorkingDirectory%/DependencyInjection/Configuration.php
+        - %currentWorkingDirectory%/vendor/*

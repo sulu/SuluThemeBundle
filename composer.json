@@ -3,7 +3,10 @@
     "type": "sulu-bundle",
     "description": "The Sulu Bundle which provides themes",
     "license": "MIT",
-    "keywords": ["sulu", "theme"],
+    "keywords": [
+        "sulu",
+        "theme"
+    ],
     "authors": [
         {
             "name": "Sulu Community",
@@ -19,7 +22,12 @@
         "jackalope/jackalope-jackrabbit": "^1.3",
         "jackalope/jackalope-doctrine-dbal": "^1.3",
         "symfony/symfony": "^4.3",
-        "phpunit/phpunit": "^8.0"
+        "phpunit/phpunit": "^8.0",
+        "jangregor/phpstan-prophecy": "^0.4.1",
+        "phpstan/phpstan": "^0.11.12",
+        "phpstan/phpstan-phpunit": "^0.11.2",
+        "phpstan/phpstan-symfony": "^0.11.6",
+        "thecodingmachine/phpstan-strict-rules": "^0.11.2"
     },
     "conflict": {
         "liip/theme-bundle": "1.6.0"
@@ -28,5 +36,13 @@
         "psr-4": {
             "Sulu\\Bundle\\ThemeBundle\\": ""
         }
+    },
+    "scripts": {
+        "phpstan": [
+            "vendor/bin/phpstan analyse"
+        ],
+        "phpunit": [
+            "vendor/bin/phpunit"
+        ]
     }
 }
