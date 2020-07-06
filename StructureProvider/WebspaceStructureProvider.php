@@ -14,6 +14,7 @@ namespace Sulu\Bundle\ThemeBundle\StructureProvider;
 use Doctrine\Common\Cache\Cache;
 use Liip\ThemeBundle\ActiveTheme;
 use Sulu\Component\Content\Compat\Structure\PageBridge;
+use Sulu\Component\Content\Compat\StructureInterface;
 use Sulu\Component\Content\Compat\StructureManagerInterface;
 use Sulu\Component\Webspace\Manager\WebspaceManagerInterface;
 use Sulu\Component\Webspace\StructureProvider\WebspaceStructureProvider as BaseWebspaceStructureProvider;
@@ -55,8 +56,10 @@ class WebspaceStructureProvider extends BaseWebspaceStructureProvider
 
     /**
      * {@inheritdoc}
+     *
+     * @return StructureInterface[]
      */
-    protected function loadStructures($webspaceKey)
+    protected function loadStructures($webspaceKey): array
     {
         $before = $this->activeTheme->getName();
         $webspace = $this->webspaceManager->findWebspaceByKey($webspaceKey);

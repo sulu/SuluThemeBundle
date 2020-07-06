@@ -16,18 +16,21 @@
     "require": {
         "php": "^7.2",
         "liip/theme-bundle": "^1.5",
-        "sulu/sulu": "^2.0"
+        "sulu/sulu": "^2.0",
+        "symfony/config": "^4.3",
+        "symfony/dependency-injection": "^4.3",
+        "symfony/http-kernel": "^4.3"
     },
     "require-dev": {
-        "jackalope/jackalope-jackrabbit": "^1.3",
         "jackalope/jackalope-doctrine-dbal": "^1.3",
-        "symfony/symfony": "^4.3",
         "phpunit/phpunit": "^8.0",
-        "jangregor/phpstan-prophecy": "^0.4.1",
-        "phpstan/phpstan": "^0.11.12",
-        "phpstan/phpstan-phpunit": "^0.11.2",
-        "phpstan/phpstan-symfony": "^0.11.6",
-        "thecodingmachine/phpstan-strict-rules": "^0.11.2"
+        "jangregor/phpstan-prophecy": "^0.8",
+        "phpstan/phpstan": "^0.12",
+        "phpstan/phpstan-doctrine": "^0.12",
+        "phpstan/phpstan-phpunit": "^0.12",
+        "phpstan/phpstan-symfony": "^0.12",
+        "symfony/dotenv": "^4.3",
+        "thecodingmachine/phpstan-strict-rules": "^0.12"
     },
     "conflict": {
         "liip/theme-bundle": "1.6.0"
@@ -38,8 +41,21 @@
         }
     },
     "scripts": {
+        "lint": [
+            "@lint-composer",
+            "@lint-yaml",
+            "@phpstan"
+        ],
+        "lint-composer": "@composer validate --strict",
+        "lint-yaml": "@php Tests/Application/bin/adminconsole lint:yaml Resources/config",
+        "lint-twig": "@php Tests/Application/bin/adminconsole lint:yaml Resources/views",
+        "lint-schema": "@php Tests/Application/bin/adminconsole doctrine:schema:validate",
+        "test": [
+            "@phpunit"
+        ],
         "phpstan": [
-            "vendor/bin/phpstan analyse"
+            "Tests/Application/bin/adminconsole cache:warmup",
+            "vendor/bin/phpstan analyse -c phpstan.neon"
         ],
         "phpunit": [
             "vendor/bin/phpunit"
