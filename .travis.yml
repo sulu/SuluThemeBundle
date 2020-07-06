@@ -11,20 +11,25 @@ matrix:
   include:
     - php: 7.2
       env:
-        - COMPOSER_FLAGS="--prefer-lowest --prefer-dist --no-interaction"
-    - php: 7.3
+        - COMPOSER_FLAGS="--prefer-lowest --prefer-stable --prefer-dist --no-interaction"
+    - php: 7.4
       env:
         - COMPOSER_FLAGS="--prefer-dist --no-interaction"
-        - PHPSTAN=true
+        - LINT=true
+        - PECL_INSTALL=imagick
 
 before_install:
+  - |
+    if [[ $PECL_INSTALL ]]; then
+        printf "\n" | pecl install $PECL_INSTALL
+    fi
   - echo "memory_limit=4096M" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  - phpenv config-rm xdebug.ini
 
 before_script:
-  - phpenv config-rm xdebug.ini
   - composer self-update
   - COMPOSER_MEMORY_LIMIT=-1 travis_retry composer update $COMPOSER_FLAGS
 
 script:
-  - if [[ $PHPSTAN = true ]]; then composer phpstan; fi
+  - if [[ $LINT = true ]]; then composer lint; fi
   - composer phpunit
