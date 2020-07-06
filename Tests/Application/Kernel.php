@@ -12,8 +12,8 @@
 namespace Sulu\Bundle\ThemeBundle\Tests\Application;
 
 use Liip\ThemeBundle\LiipThemeBundle;
-use Sulu\Bundle\ThemeBundle\SuluThemeBundle;
 use Sulu\Bundle\TestBundle\Kernel\SuluTestKernel;
+use Sulu\Bundle\ThemeBundle\SuluThemeBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
 class Kernel extends SuluTestKernel

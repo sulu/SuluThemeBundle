@@ -112,12 +112,6 @@ class WebspaceStructureProviderTest extends TestCase
         $this->assertEquals($structures[2]->getKey(), $result[1]->getKey());
     }
 
-    /**
-     * @param string $key
-     * @param string $view
-     *
-     * @return StructureInterface
-     */
     private function generateStructure(string $key, string $view): StructureInterface
     {
         $mock = $this->prophesize('Sulu\Component\Content\Compat\Structure\PageBridge');

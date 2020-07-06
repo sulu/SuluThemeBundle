@@ -25,9 +25,6 @@ class SetThemeEventListener
      */
     private $activeTheme;
 
-    /**
-     * @param ActiveTheme $activeTheme
-     */
     public function __construct(ActiveTheme $activeTheme)
     {
         $this->activeTheme = $activeTheme;
@@ -35,8 +32,6 @@ class SetThemeEventListener
 
     /**
      * Set the active theme if there is a portal.
-     *
-     * @param GetResponseEvent $event
      */
     public function setActiveThemeOnRequest(GetResponseEvent $event): void
     {
@@ -52,8 +47,6 @@ class SetThemeEventListener
 
     /**
      * Set the active theme for a preview rendering.
-     *
-     * @param PreRenderEvent $event
      */
     public function setActiveThemeOnPreviewPreRender(PreRenderEvent $event): void
     {

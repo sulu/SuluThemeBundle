@@ -34,13 +34,6 @@ class WebspaceStructureProvider extends BaseWebspaceStructureProvider
      */
     protected $activeTheme;
 
-    /**
-     * @param \Twig_Environment $twig
-     * @param StructureManagerInterface $structureManager
-     * @param Cache $cache
-     * @param WebspaceManagerInterface $webspaceManager
-     * @param ActiveTheme $activeTheme
-     */
     public function __construct(
         \Twig_Environment $twig,
         StructureManagerInterface $structureManager,
