@@ -1,6 +1,9 @@
 CHANGELOG for Sulu
 ==================
 
+* 1.3.2
+    * ENHANCEMENT #- Add conflict for liip/theme-bundle
+
 * 1.3.1
     * ENHANCEMENT #- Updated sulu requirement
 
