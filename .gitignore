@@ -1,10 +1,7 @@
-/Tests/app/cache/*
-/Tests/app/logs/*
-/node_modules/
+/Tests/Application/var/*
 /vendor/
 /composer.phar
 /composer.lock
-/.sass-cache/
 .php_cs.cache
 *~
 

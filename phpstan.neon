@@ -1,5 +1,7 @@
 includes:
-    - vendor/jangregor/phpstan-prophecy/src/extension.neon
+    - vendor/jangregor/phpstan-prophecy/extension.neon
+    - vendor/phpstan/phpstan-doctrine/extension.neon
+    - vendor/phpstan/phpstan-doctrine/rules.neon
     - vendor/phpstan/phpstan-symfony/extension.neon
     - vendor/phpstan/phpstan-phpunit/extension.neon
     - vendor/phpstan/phpstan-phpunit/rules.neon
@@ -9,6 +11,9 @@ parameters:
     paths:
         - .
     level: max
+    symfony:
+        container_xml_path: %rootDir%/../../../Tests/Application/var/cache/admin/dev/Sulu_Bundle_ThemeBundle_Tests_Application_KernelDevDebugContainer.xml
     excludes_analyse:
         - %currentWorkingDirectory%/DependencyInjection/Configuration.php
         - %currentWorkingDirectory%/vendor/*
+        - %currentWorkingDirectory%/Tests/Application/*
