@@ -15,7 +15,6 @@
     ],
     "require": {
         "php": "^7.2",
-        "liip/theme-bundle": "^1.5",
         "sulu/sulu": "^2.0",
         "symfony/config": "^5.1",
         "symfony/dependency-injection": "^5.1",
