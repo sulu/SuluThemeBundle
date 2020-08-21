@@ -11,27 +11,35 @@
 
 namespace Sulu\Bundle\ThemeBundle\Tests\Unit\EventListener;
 
-use Liip\ThemeBundle\ActiveTheme;
+use DG\BypassFinals;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
 use Sulu\Bundle\PreviewBundle\Preview\Events\PreRenderEvent;
 use Sulu\Bundle\ThemeBundle\EventListener\SetThemeEventListener;
 use Sulu\Component\Webspace\Analyzer\Attributes\RequestAttributes;
 use Sulu\Component\Webspace\Webspace;
+use Sylius\Bundle\ThemeBundle\Configuration\Test\TestThemeConfigurationManagerInterface;
+use Sylius\Bundle\ThemeBundle\Context\SettableThemeContext;
+use Sylius\Bundle\ThemeBundle\Repository\ThemeRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 class SetThemeEventListenerTest extends TestCase
 {
     /**
-     * @var ObjectProphecy|ActiveTheme
+     * @var ObjectProphecy|ThemeRepositoryInterface
      */
-    private $activeTheme;
+    private $themeRepository;
+
+    /**
+     * @var ObjectProphecy|SettableThemeContext
+     */
+    private $themeContext;
 
     /**
      * @var string
      */
-    private $theme = 'test';
+    private $theme = 'theme/name';
 
     /**
      * @var ObjectProphecy|Webspace
@@ -45,11 +53,14 @@ class SetThemeEventListenerTest extends TestCase
 
     public function setUp(): void
     {
-        $this->activeTheme = $this->prophesize(ActiveTheme::class);
+        BypassFinals::enable();
+
+        $this->themeRepository = $this->prophesize(ThemeRepositoryInterface::class);
+        $this->themeContext = $this->prophesize(SettableThemeContext::class);
         $this->webspace = $this->prophesize(Webspace::class);
         $this->webspace->getTheme()->willReturn($this->theme);
 
-        $this->listener = new SetThemeEventListener($this->activeTheme->reveal());
+        $this->listener = new SetThemeEventListener($this->themeRepository->reveal(), $this->themeContext->reveal());
     }
 
     public function testEventListener(): void
@@ -59,11 +70,13 @@ class SetThemeEventListenerTest extends TestCase
         $attributes->getAttribute('webspace')->willReturn($this->webspace->reveal());
         $request->get('_sulu')->willReturn($attributes->reveal());
 
-        $event = $this->prophesize(GetResponseEvent::class);
+        $event = $this->prophesize(RequestEvent::class);
         $event->getRequest()->willReturn($request->reveal());
         $event->isMasterRequest()->willReturn(true);
 
-        $this->activeTheme->setName($this->theme)->shouldBeCalled();
+        $this->themeContext->setTheme(
+            $this->themeRepository->findOneByName($this->theme)
+        )->shouldBeCalled();
 
         $this->listener->setActiveThemeOnRequest($event->reveal());
     }
@@ -75,11 +88,13 @@ class SetThemeEventListenerTest extends TestCase
         $attributes->getAttribute('webspace')->willReturn($this->webspace->reveal());
         $request->get('_sulu')->willReturn($attributes->reveal());
 
-        $event = $this->prophesize(GetResponseEvent::class);
+        $event = $this->prophesize(RequestEvent::class);
         $event->getRequest()->willReturn($request->reveal());
         $event->isMasterRequest()->willReturn(false);
 
-        $this->activeTheme->setName($this->theme)->shouldBeCalled();
+        $this->themeContext->setTheme(
+            $this->themeRepository->findOneByName($this->theme)
+        )->shouldBeCalled();
 
         $this->listener->setActiveThemeOnRequest($event->reveal());
     }
@@ -91,11 +106,13 @@ class SetThemeEventListenerTest extends TestCase
         $attributes->getAttribute('webspace')->willReturn(null);
         $request->get('_sulu')->willReturn($attributes->reveal());
 
-        $event = $this->prophesize(GetResponseEvent::class);
+        $event = $this->prophesize(RequestEvent::class);
         $event->getRequest()->willReturn($request->reveal());
         $event->isMasterRequest()->willReturn(true);
 
-        $this->activeTheme->setName($this->theme)->shouldNotBeCalled();
+        $this->themeContext->setTheme(
+            $this->themeRepository->findOneByName($this->theme)
+        )->shouldNotBeCalled();
 
         $this->listener->setActiveThemeOnRequest($event->reveal());
     }
@@ -105,11 +122,13 @@ class SetThemeEventListenerTest extends TestCase
         $request = $this->prophesize(Request::class);
         $request->get('_sulu')->willReturn(null);
 
-        $event = $this->prophesize(GetResponseEvent::class);
+        $event = $this->prophesize(RequestEvent::class);
         $event->getRequest()->willReturn($request->reveal());
         $event->isMasterRequest()->willReturn(true);
 
-        $this->activeTheme->setName($this->theme)->shouldNotBeCalled();
+        $this->themeContext->setTheme(
+            $this->themeRepository->findOneByName($this->theme)
+        )->shouldNotBeCalled();
 
         $this->listener->setActiveThemeOnRequest($event->reveal());
     }
@@ -119,7 +138,9 @@ class SetThemeEventListenerTest extends TestCase
         $attributes = $this->prophesize(RequestAttributes::class);
         $attributes->getAttribute('webspace', null)->willReturn($this->webspace->reveal());
 
-        $this->activeTheme->setName($this->theme)->shouldBeCalled();
+        $this->themeContext->setTheme(
+            $this->themeRepository->findOneByName($this->theme)
+        )->shouldBeCalled();
 
         $this->listener->setActiveThemeOnPreviewPreRender(
             new PreRenderEvent($attributes->reveal())

@@ -11,9 +11,9 @@
 
 namespace Sulu\Bundle\ThemeBundle\Tests\Application;
 
-use Liip\ThemeBundle\LiipThemeBundle;
 use Sulu\Bundle\TestBundle\Kernel\SuluTestKernel;
 use Sulu\Bundle\ThemeBundle\SuluThemeBundle;
+use Sylius\Bundle\ThemeBundle\SyliusThemeBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
 class Kernel extends SuluTestKernel
@@ -34,7 +34,7 @@ class Kernel extends SuluTestKernel
         return array_merge(
             parent::registerBundles(),
             [
-                new LiipThemeBundle(),
+                new SyliusThemeBundle(),
                 new SuluThemeBundle(),
             ]
         );

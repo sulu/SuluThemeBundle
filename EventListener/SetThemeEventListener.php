@@ -21,10 +21,14 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
  */
 class SetThemeEventListener
 {
-    /** @var ThemeRepositoryInterface */
+    /**
+     * @var ThemeRepositoryInterface
+     */
     private $themeRepository;
 
-    /** @var SettableThemeContext */
+    /**
+     * @var SettableThemeContext
+     */
     private $themeContext;
 
     public function __construct(ThemeRepositoryInterface $themeRepository, SettableThemeContext $themeContext)
