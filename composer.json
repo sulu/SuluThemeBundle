@@ -18,7 +18,8 @@
         "sulu/sulu": "^2.0",
         "symfony/config": "^5.1",
         "symfony/dependency-injection": "^5.1",
-        "symfony/http-kernel": "^5.1"
+        "symfony/http-kernel": "^5.1",
+        "sylius/theme-bundle": "^2.0"
     },
     "require-dev": {
         "jackalope/jackalope-doctrine-dbal": "^1.3",

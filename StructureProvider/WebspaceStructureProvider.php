@@ -12,12 +12,13 @@
 namespace Sulu\Bundle\ThemeBundle\StructureProvider;
 
 use Doctrine\Common\Cache\Cache;
-use Liip\ThemeBundle\ActiveTheme;
 use Sulu\Component\Content\Compat\Structure\PageBridge;
 use Sulu\Component\Content\Compat\StructureInterface;
 use Sulu\Component\Content\Compat\StructureManagerInterface;
 use Sulu\Component\Webspace\Manager\WebspaceManagerInterface;
 use Sulu\Component\Webspace\StructureProvider\WebspaceStructureProvider as BaseWebspaceStructureProvider;
+use Sylius\Bundle\ThemeBundle\Context\SettableThemeContext;
+use Sylius\Bundle\ThemeBundle\Repository\ThemeRepositoryInterface;
 
 /**
  * Provide templates which are implemented in a single webspace.
@@ -29,22 +30,25 @@ class WebspaceStructureProvider extends BaseWebspaceStructureProvider
      */
     protected $webspaceManager;
 
-    /**
-     * @var ActiveTheme
-     */
-    protected $activeTheme;
+    /** @var ThemeRepositoryInterface */
+    private $themeRepository;
+
+    /** @var SettableThemeContext */
+    private $themeContext;
 
     public function __construct(
         \Twig_Environment $twig,
         StructureManagerInterface $structureManager,
         Cache $cache,
         WebspaceManagerInterface $webspaceManager,
-        ActiveTheme $activeTheme
+        ThemeRepositoryInterface $themeRepository,
+        SettableThemeContext $themeContext
     ) {
         parent::__construct($twig, $structureManager, $cache);
 
         $this->webspaceManager = $webspaceManager;
-        $this->activeTheme = $activeTheme;
+        $this->themeRepository = $themeRepository;
+        $this->themeContext = $themeContext;
     }
 
     /**
@@ -54,7 +58,7 @@ class WebspaceStructureProvider extends BaseWebspaceStructureProvider
      */
     protected function loadStructures($webspaceKey): array
     {
-        $before = $this->activeTheme->getName();
+        $before = $this->themeContext->getTheme()->getName();
         $webspace = $this->webspaceManager->findWebspaceByKey($webspaceKey);
 
         if (!$webspace) {
@@ -62,7 +66,9 @@ class WebspaceStructureProvider extends BaseWebspaceStructureProvider
         }
 
         if (null !== $webspace->getTheme()) {
-            $this->activeTheme->setName($webspace->getTheme());
+            $this->themeContext->setTheme(
+                $this->themeRepository->findOneByName($webspace->getTheme())
+            );
         }
 
         $structures = [];
@@ -75,7 +81,9 @@ class WebspaceStructureProvider extends BaseWebspaceStructureProvider
                 $structures[] = $page;
             }
         }
-        $this->activeTheme->setName($before);
+        $this->themeContext->setTheme(
+            $this->themeRepository->findOneByName($before)
+        );
         $this->cache->save($webspaceKey, $keys);
 
         return $structures;

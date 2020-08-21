@@ -30,6 +30,7 @@ class WebspaceStructureProviderCompilerPass implements CompilerPassInterface
         $definition = $container->getDefinition('sulu.content.webspace_structure_provider');
         $definition->setClass(WebspaceStructureProvider::class);
         $definition->addArgument(new Reference('sulu_core.webspace.webspace_manager'));
-        $definition->addArgument(new Reference('liip_theme.active_theme'));
+        $definition->addArgument(new Reference('sylius.repository.theme'));
+        $definition->addArgument(new Reference('sylius.theme.context.settable'));
     }
 }
