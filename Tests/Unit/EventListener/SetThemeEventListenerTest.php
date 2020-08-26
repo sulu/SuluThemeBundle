@@ -53,8 +53,6 @@ class SetThemeEventListenerTest extends TestCase
 
     public function setUp(): void
     {
-        BypassFinals::enable();
-
         $this->themeRepository = $this->prophesize(ThemeRepositoryInterface::class);
         $this->themeContext = $this->prophesize(SettableThemeContext::class);
         $this->webspace = $this->prophesize(Webspace::class);
