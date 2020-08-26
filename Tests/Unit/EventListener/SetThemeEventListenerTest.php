@@ -11,14 +11,12 @@
 
 namespace Sulu\Bundle\ThemeBundle\Tests\Unit\EventListener;
 
-use DG\BypassFinals;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
 use Sulu\Bundle\PreviewBundle\Preview\Events\PreRenderEvent;
 use Sulu\Bundle\ThemeBundle\EventListener\SetThemeEventListener;
 use Sulu\Component\Webspace\Analyzer\Attributes\RequestAttributes;
 use Sulu\Component\Webspace\Webspace;
-use Sylius\Bundle\ThemeBundle\Configuration\Test\TestThemeConfigurationManagerInterface;
 use Sylius\Bundle\ThemeBundle\Context\SettableThemeContext;
 use Sylius\Bundle\ThemeBundle\Repository\ThemeRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;

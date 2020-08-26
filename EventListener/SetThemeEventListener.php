@@ -59,7 +59,6 @@ class SetThemeEventListener
      */
     public function setActiveThemeOnPreviewPreRender(PreRenderEvent $event): void
     {
-
         $this->themeContext->setTheme(
             $this->themeRepository->findOneByName($event->getAttribute('webspace')->getTheme())
         );
