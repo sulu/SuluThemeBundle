@@ -49,9 +49,10 @@ class SetThemeEventListener
             return;
         }
 
-        $this->themeContext->setTheme(
-            $this->themeRepository->findOneByName($theme)
-        );
+        $theme = $this->themeRepository->findOneByName($theme);
+        if (null !== $theme) {
+            $this->themeContext->setTheme($theme);
+        }
     }
 
     /**
@@ -59,8 +60,9 @@ class SetThemeEventListener
      */
     public function setActiveThemeOnPreviewPreRender(PreRenderEvent $event): void
     {
-        $this->themeContext->setTheme(
-            $this->themeRepository->findOneByName($event->getAttribute('webspace')->getTheme())
-        );
+        $theme = $this->themeRepository->findOneByName($event->getAttribute('webspace')->getTheme());
+        if (null !== $theme) {
+            $this->themeContext->setTheme($theme);
+        }
     }
 }

@@ -11,7 +11,6 @@
 
 namespace Sulu\Bundle\ThemeBundle\DependencyInjection\CompilerPass;
 
-use Liip\ThemeBundle\ActiveTheme;
 use Sulu\Bundle\MediaBundle\DependencyInjection\AbstractImageFormatCompilerPass;
 use Sylius\Bundle\ThemeBundle\Repository\ThemeRepositoryInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -26,14 +25,13 @@ class ImageFormatCompilerPass extends AbstractImageFormatCompilerPass
      */
     protected function getFiles(ContainerBuilder $container)
     {
-        $files = [];
-
-        /** @var ThemeRepositoryInterface $activeTheme */
-        $activeTheme = $container->get('sylius.repository.theme');
+        /** @var ThemeRepositoryInterface $themeRepository */
+        $themeRepository = $container->get('sylius.repository.theme');
         $bundles = $container->getParameter('kernel.bundles');
         $configPath = 'config/image-formats.xml';
 
-        foreach ($activeTheme->findAll() as $theme) {
+        $files = [];
+        foreach ($themeRepository->findAll() as $theme) {
             foreach ($bundles as $bundleName => $bundle) {
                 $bundleReflection = new \ReflectionClass($bundle);
                 $fileName = $bundleReflection->getFileName();
