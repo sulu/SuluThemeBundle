@@ -60,8 +60,8 @@ sylius_theme:
         filesystem: ~
 ```
 
-By default, the bundle seeks for the themes in the `%kernel.project_dir%/themes` directory and looks for a configuration
-file named `composer.json`. This can be changed via the yaml configuration:
+By default, the bundle seeks for the themes in the `%kernel.project_dir%/themes` directory and looks for a
+theme configuration file named `composer.json`. This can be changed via the yaml configuration:
 
 ```yaml
 sylius_theme:
@@ -70,7 +70,7 @@ sylius_theme:
             filename: theme.json
 ```
 
-For more detailed information about the configuration sources go to the [Sylius documentation](https://github.com/Sylius/SyliusThemeBundle/blob/master/docs/configuration_sources.md).
+For more detailed information about the configuration sources go to the [SyliusThemeBundle documentation](https://github.com/Sylius/SyliusThemeBundle/blob/master/docs/configuration_sources.md).
 
 ### Configure your themes
 
