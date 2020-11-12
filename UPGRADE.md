@@ -53,7 +53,7 @@ sylius_theme:
 
 #### Convert Theme Configuration
 
-In the SyliusThemeBundle every theme must have its own configuration file in form of a `composer.json`.
+In the SyliusThemeBundle every theme must have its own configuration file in form of a `theme.json`.
 Add a `theme.json` file and add the following minimal configuration:
 
 ```diff

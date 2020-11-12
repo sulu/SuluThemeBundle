@@ -74,7 +74,7 @@ For more detailed information about the configuration sources go to the [SyliusT
 
 ### Configure your themes
 
-Every theme must have its own configuration file in form of a `composer.json`.
+Every theme must have its own configuration file in form of a `theme.json`.
 Go to the [Theme Configuration Reference](https://github.com/Sylius/SyliusThemeBundle/blob/master/docs/theme_configuration_reference.md)
 for the detailed documentation about the configuration options.
 
