@@ -1,6 +1,6 @@
 # Upgrade
 
-## 2.1
+## 3.0
 
 ### Switch from LiipThemeBundle to SyliusThemeBundle
 
@@ -13,12 +13,25 @@ To achieve Symfony 5 compatibility the ThemingBundle has to be changed from [Lii
 composer remove liip/theme-bundle --no-update
 
 # Install new theme-bundle
-composer require sylius/theme-bundle
+composer require sylius/theme-bundle:"^2.0" --no-update
+composer require sulu/theme-bundle:"^3.0"
 ```
+
+#### Remove old configuration
+
+The old `liip_theme.yaml` configuration needs to be removed:
+
+```diff
+- liip_theme:
+-     themes: ['project', 'awesome']
+-     active_theme: 'awesome'
+```
+
+In the next step you see how you configure the **awesome** theme using the SyliusThemeBundle.
 
 #### Configure the SyliusThemeBundle:
 
-In order you to use the bundle you have to add the following default configuration:
+In order to use the bundle you have to add the following default configuration:
 
 ```yaml
 # ./config/packages/sylius_theme.yaml
@@ -28,7 +41,7 @@ sylius_theme:
         filesystem: ~
 ```
 
-By default the bundle seeks for the themes in the `%kernel.project_dir%/themes` directory. This can be changed via the 
+By default, the bundle seeks for the themes in the `%kernel.project_dir%/themes` directory. This can be changed via the 
 yaml configuration:
 
 ```yaml
@@ -40,43 +53,28 @@ sylius_theme:
                 - "%kernel.project_dir%/templates/themes"
 ```
 
-#### Theme Configuration
+#### Convert Theme Configuration
 
-Every theme must have its own configuration file in form of a `composer.json`.
-Go to https://github.com/Sylius/SyliusThemeBundle/blob/master/docs/theme_configuration_reference.md for detailed
-documentation about the configuration options. The configuration file has to be placed in the specified directory
-of the `sylius_theme.yaml`.
+In the SyliusThemeBundle every theme must have its own configuration file in form of a `composer.json`.
+Add a `theme.json` file and add the following minimal configuration:
 
-The minimal configuration for a theme would be the following:
-
-```json
-// ./templates/themes/<theme-name>/theme.json
-
-{
-  "name": "vendor/name"
-}
+```diff
++ {
++     "name": "app/awesome"
++ }
 ```
 
-It is important, that the `name` matches the naming convention of composer.
+Go to the [Theme Configuration Reference](https://github.com/Sylius/SyliusThemeBundle/blob/master/docs/theme_configuration_reference.md)
+for the detailed documentation about the configuration options.
 
-If your old theme name didn't match the naming convention you also have to change it in the `webspace.xml` to the new one.
+Most likely you have to change the theme name. It is important, that the `name` matches the naming convention of composer (`vendor/name`).
+Furthermore the `theme.json` has to be moved into the directory for this specific theme. 
 
-```xml
-<!-- ./config/webspaces/example.xml -->
-<webspace xmlns="http://schemas.sulu.io/webspace/webspace"
-          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xsi:schemaLocation="http://schemas.sulu.io/webspace/webspace http://schemas.sulu.io/webspace/webspace-1.1.xsd">
-    <name>example.com</name>
-    <key>example</key>
-    ...
-    <theme>vendor/name</theme>
-    ...    
-</webspace>
-```
+For example: `%kernel.project_dir%/templates/themes/awesome/theme.json`
 
 #### Update project structure
 
-Your themes have to be placed in a `templates` folder next to the `theme.json` file.
+Your templates have to be placed in a `templates` directory next to the `theme.json` file.
 
 For example: `%kernel.project_dir%/templates/themes/<theme-name>/templates`
 
@@ -91,7 +89,7 @@ ProjectName
 ├── ...
 ├── templates
 │   ├── themes
-│   │   ├── <theme-name-1>
+│   │   ├── awesome
 │   │   │   ├── templates
 │   │   │   │   └── base.html.twig
 │   │   │   └── theme.json
@@ -102,4 +100,16 @@ ProjectName
 |   └── base.html.twig
 ├── ...
 └── ...
+```
+
+As you can see in the project structure, each theme must have their own `theme.json` configuration file next to the
+templates directory.
+
+#### Update webspace configuration
+
+If your old theme name didn't match the naming convention you also have to change it in the `webspace.xml` to the new one.
+
+```diff
+- <theme>awesome</theme>
++ <theme>app/awesome</theme>
 ```
