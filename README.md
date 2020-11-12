@@ -60,16 +60,14 @@ sylius_theme:
         filesystem: ~
 ```
 
-By default the bundle seeks for the themes in the `%kernel.project_dir%/themes` directory. This can be changed via the 
-yaml configuration:
+By default, the bundle seeks for the themes in the `%kernel.project_dir%/themes` directory and looks for a configuration
+file named `composer.json`. This can be changed via the yaml configuration:
 
 ```yaml
 sylius_theme:
     sources:
         filesystem:
-            filename: theme.json    #default is composer.json
-            directories:
-                - "%kernel.project_dir%/templates/themes"
+            filename: theme.json
 ```
 
 For more detailed information about the configuration sources go to the [Sylius documentation](https://github.com/Sylius/SyliusThemeBundle/blob/master/docs/configuration_sources.md).
@@ -79,25 +77,25 @@ For more detailed information about the configuration sources go to the [Sylius 
 Every theme must have its own configuration file in form of a `composer.json`.
 Go to the [Theme Configuration Reference](https://github.com/Sylius/SyliusThemeBundle/blob/master/docs/theme_configuration_reference.md)
 for the detailed documentation about the configuration options.
-The configuration file has to be placed in the specified directory of the `sylius_theme.yaml`.
 
 The minimal configuration for a theme would be the following:
 
 ```json
-// ./templates/themes/<theme-name>/theme.json
+// ./themes/<theme-name-1>/theme.json
 
 {
-  "name": "vendor/<theme-name>"
+  "name": "vendor/<theme-name-1>"
 }
 ```
 
-It is important, that the `name` matches the naming convention of composer. 
+It is important, that the `name` matches the naming convention of composer (`vendor/name`). 
 
 ### Create a theme
-To create a theme you have to create a new directory in the templates/themes folder of your application with the name of
-the new theme. In the newly created directory you have to add the theme configuration file `theme.json`.
+First you have to create the directory `themes` inside your project.
+To create a theme you have to create a new directory in the themes folder with the name of the new theme. 
+In the newly created directory you have to add the theme configuration file `theme.json`.
 See [Configure your themes](#configure-your-themes). Additonally you have to create the `templates` directory next to 
-the `theme.json`. Afterwards you have to fill this folder with all the used templates in the webspace. 
+the `theme.json`. Afterwards you have to fill this folder with all the used templates and assets for this theme. 
 
 This results in the following project structure:
 
@@ -107,24 +105,22 @@ ProjectName
 ├── assets
 ├── bin
 ├── config
-├── ...
 ├── templates
-│   ├── themes
-│   │   ├── <theme-name-1>
-│   │   │   ├── templates
-│   │   │   │   └── base.html.twig
-│   │   │   └── theme.json
-│   │   └── <theme-name-2>
-│   │       ├── templates
-│   │       │   └── base.html.twig
-│   │       └── theme.json
-|   └── base.html.twig
+├── themes
+│   ├── <theme-name-1>
+│   │   ├── templates
+│   │   │   └── base.html.twig
+│   │   └── theme.json
+│   └── <theme-name-2>
+│       ├── templates
+│       │   └── base.html.twig
+│       └── theme.json
 ├── ...
 └── ...
 ```
 
 ### Add one of your themes to a webspace
-Each webspace can use a different theme. A theme can be enabled for a specific webspace by adding the theme-name
+Each webspace can use a different theme. A theme can be enabled for a specific webspace by adding the theme name
 `<theme>vendor/theme-name</theme>` to your webspace:
 
 ```xml

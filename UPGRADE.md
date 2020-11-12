@@ -41,16 +41,14 @@ sylius_theme:
         filesystem: ~
 ```
 
-By default, the bundle seeks for the themes in the `%kernel.project_dir%/themes` directory. This can be changed via the 
-yaml configuration:
+By default, the bundle seeks for the themes in the `%kernel.project_dir%/themes` directory and looks for a configuration
+file named `composer.json`. This can be changed via the yaml configuration:
 
 ```yaml
 sylius_theme:
     sources:
         filesystem:
-            filename: theme.json    #default is composer.json
-            directories:
-                - "%kernel.project_dir%/templates/themes"
+            filename: theme.json
 ```
 
 #### Convert Theme Configuration
@@ -70,13 +68,13 @@ for the detailed documentation about the configuration options.
 Most likely you have to change the theme name. It is important, that the `name` matches the naming convention of composer (`vendor/name`).
 Furthermore the `theme.json` has to be moved into the directory for this specific theme. 
 
-For example: `%kernel.project_dir%/templates/themes/awesome/theme.json`
+For example: `%kernel.project_dir%/themes/awesome/theme.json`
 
 #### Update project structure
 
 Your templates have to be placed in a `templates` directory next to the `theme.json` file.
 
-For example: `%kernel.project_dir%/templates/themes/<theme-name>/templates`
+For example: `%kernel.project_dir%/themes/<theme-name>/templates`
 
 This results in the following project structure:
 
@@ -86,18 +84,16 @@ ProjectName
 ├── assets
 ├── bin
 ├── config
-├── ...
 ├── templates
-│   ├── themes
-│   │   ├── awesome
-│   │   │   ├── templates
-│   │   │   │   └── base.html.twig
-│   │   │   └── theme.json
-│   │   └── <theme-name-2>
-│   │       ├── templates
-│   │       │   └── base.html.twig
-│   │       └── theme.json
-|   └── base.html.twig
+├── themes
+│   ├── awesome
+│   │   ├── templates
+│   │   │   └── base.html.twig
+│   │   └── theme.json
+│   └── <theme-name-2>
+│       ├── templates
+│       │   └── base.html.twig
+│       └── theme.json
 ├── ...
 └── ...
 ```
