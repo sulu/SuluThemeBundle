@@ -120,6 +120,7 @@ ProjectName
 ```
 
 ### Add one of your themes to a webspace
+
 Each webspace can use a different theme. A theme can be enabled for a specific webspace by adding the theme name
 `<theme>vendor/theme-name</theme>` to your webspace:
 
