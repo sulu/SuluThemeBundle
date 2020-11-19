@@ -2,11 +2,11 @@
 <container xmlns="http://symfony.com/schema/dic/services"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-
     <services>
         <service id="sulu_theme.event_listener.set_theme"
                  class="Sulu\Bundle\ThemeBundle\EventListener\SetThemeEventListener">
-            <argument type="service" id="liip_theme.active_theme"/>
+            <argument type="service" id="sylius.repository.theme"/>
+            <argument type="service" id="sylius.theme.context.settable"/>
 
             <tag name="kernel.event_listener" event="kernel.request" method="setActiveThemeOnRequest"/>
         </service>

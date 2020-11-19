@@ -11,8 +11,8 @@
 
 namespace Sulu\Bundle\ThemeBundle\DependencyInjection\CompilerPass;
 
-use Liip\ThemeBundle\ActiveTheme;
 use Sulu\Bundle\MediaBundle\DependencyInjection\AbstractImageFormatCompilerPass;
+use Sylius\Bundle\ThemeBundle\Repository\ThemeRepositoryInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
@@ -25,14 +25,13 @@ class ImageFormatCompilerPass extends AbstractImageFormatCompilerPass
      */
     protected function getFiles(ContainerBuilder $container)
     {
-        $files = [];
-
-        /** @var ActiveTheme $activeTheme */
-        $activeTheme = $container->get('liip_theme.active_theme');
+        /** @var ThemeRepositoryInterface $themeRepository */
+        $themeRepository = $container->get('sylius.repository.theme');
         $bundles = $container->getParameter('kernel.bundles');
         $configPath = 'config/image-formats.xml';
 
-        foreach ($activeTheme->getThemes() as $theme) {
+        $files = [];
+        foreach ($themeRepository->findAll() as $theme) {
             foreach ($bundles as $bundleName => $bundle) {
                 $bundleReflection = new \ReflectionClass($bundle);
                 $fileName = $bundleReflection->getFileName();
@@ -44,7 +43,7 @@ class ImageFormatCompilerPass extends AbstractImageFormatCompilerPass
                 $path = sprintf(
                     '%s/Resources/themes/%s/%s',
                     dirname($fileName),
-                    $theme,
+                    $theme->getName(),
                     $configPath
                 );
 

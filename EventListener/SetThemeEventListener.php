@@ -11,9 +11,10 @@
 
 namespace Sulu\Bundle\ThemeBundle\EventListener;
 
-use Liip\ThemeBundle\ActiveTheme;
 use Sulu\Bundle\PreviewBundle\Preview\Events\PreRenderEvent;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Sylius\Bundle\ThemeBundle\Context\SettableThemeContext;
+use Sylius\Bundle\ThemeBundle\Repository\ThemeRepositoryInterface;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 /**
  * Listener which applies the configured theme.
@@ -21,19 +22,25 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 class SetThemeEventListener
 {
     /**
-     * @var ActiveTheme
+     * @var ThemeRepositoryInterface
      */
-    private $activeTheme;
+    private $themeRepository;
 
-    public function __construct(ActiveTheme $activeTheme)
+    /**
+     * @var SettableThemeContext
+     */
+    private $themeContext;
+
+    public function __construct(ThemeRepositoryInterface $themeRepository, SettableThemeContext $themeContext)
     {
-        $this->activeTheme = $activeTheme;
+        $this->themeRepository = $themeRepository;
+        $this->themeContext = $themeContext;
     }
 
     /**
      * Set the active theme if there is a portal.
      */
-    public function setActiveThemeOnRequest(GetResponseEvent $event): void
+    public function setActiveThemeOnRequest(RequestEvent $event): void
     {
         if (null === ($attributes = $event->getRequest()->get('_sulu'))
             || null === ($webspace = $attributes->getAttribute('webspace'))
@@ -42,7 +49,10 @@ class SetThemeEventListener
             return;
         }
 
-        $this->activeTheme->setName($theme);
+        $theme = $this->themeRepository->findOneByName($theme);
+        if (null !== $theme) {
+            $this->themeContext->setTheme($theme);
+        }
     }
 
     /**
@@ -50,6 +60,9 @@ class SetThemeEventListener
      */
     public function setActiveThemeOnPreviewPreRender(PreRenderEvent $event): void
     {
-        $this->activeTheme->setName($event->getAttribute('webspace')->getTheme());
+        $theme = $this->themeRepository->findOneByName($event->getAttribute('webspace')->getTheme());
+        if (null !== $theme) {
+            $this->themeContext->setTheme($theme);
+        }
     }
 }
