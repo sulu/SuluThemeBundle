@@ -2,4 +2,4 @@ imports:
     - config.yaml
 
 framework:
-    router: { resource: "%kernel.project_dir%/config/routing_website.yml" }
+    router: { resource: "%kernel.project_dir%/config/routing_website.yaml" }

@@ -16,6 +16,9 @@
     <a href="https://github.com/sulu/sulu/releases" target="_blank">
         <img src="https://img.shields.io/badge/sulu%20compatibility-%3E=2.0-52b6ca.svg" alt="Sulu compatibility">
     </a>
+    <a href="https://github.com/sulu/SuluThemeBundle/actions" target="_blank">
+        <img src="https://img.shields.io/github/workflow/status/sulu/SuluThemeBundle/Test%20application/master.svg?label=github-actions" alt="GitHub actions status">
+    </a>
 </p>
 <br/>
 

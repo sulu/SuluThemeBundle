@@ -5,28 +5,45 @@ on:
     push:
         branches:
             - master
+            - develop
             - '[0-9]+.[0-9]+'
 
 jobs:
     test:
         name: "Run tests with php ${{ matrix.php-version }}"
-        runs-on: ubuntu-18.04
+        runs-on: ubuntu-latest
+
+        env:
+            DATABASE_URL: mysql://root:root@127.0.0.1:3306/su_theme_test?serverVersion=5.7
+            DATABASE_CHARSET: utf8mb4
+            DATABASE_COLLATE: utf8mb4_unicode_ci
 
         strategy:
             fail-fast: false
             matrix:
                 include:
-                    - php-version: '5.5'
-                      composer-flags: '--prefer-dist --prefer-lowest --no-interaction --prefer-stable'
+                    - php-version: '7.3'
+                      composer-flags: '--prefer-lowest --prefer-stable --prefer-dist --no-interaction'
                       tools: 'composer:v1'
+                      lint: false
                       env:
-                          SYMFONY__DEPRECATIONS__HELPER: disabled
+                          SYMFONY_DEPRECATIONS_HELPER: disabled
 
                     - php-version: '7.4'
                       composer-flags: '--prefer-dist --no-interaction'
                       tools: 'composer:v2'
+                      lint: true
                       env:
-                          SYMFONY__DEPRECATIONS__HELPER: weak
+                          SYMFONY_DEPRECATIONS_HELPER: disabled
+
+        services:
+            mysql:
+                image: mysql:5.7
+                env:
+                    MYSQL_ROOT_PASSWORD: root
+                ports:
+                    - 3306:3306
+                options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=5
 
         steps:
             - name: Checkout project
@@ -36,6 +53,7 @@ jobs:
               uses: shivammathur/setup-php@v2
               with:
                   php-version: ${{ matrix.php-version }}
+                  extensions: 'imagick'
                   tools: ${{ matrix.tools }}
 
             - name: Get composer cache directory
@@ -56,6 +74,15 @@ jobs:
                   composer validate --strict
                   composer update ${{ matrix.composer-flags }}
 
-            - name: Run tests
-              run: time vendor/bin/phpunit
+            - name: Lint
+              if: ${{ matrix.lint }}
+              run: |
+                  Tests/Application/bin/adminconsole cache:clear --env dev
+                  Tests/Application/bin/websiteconsole cache:clear --env dev
+                  composer lint
               env: ${{ matrix.env }}
+
+            - name: Run tests
+              run: composer test
+              env: ${{ matrix.env }}
+
