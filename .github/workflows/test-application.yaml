@@ -9,7 +9,7 @@ on:
 
 jobs:
     test:
-        name: "Run tests with php ${{ matrix.php-version }} (${{ matrix.database }}, ${{ matrix.phpcr-transport }})"
+        name: "Run tests with php ${{ matrix.php-version }}"
         runs-on: ubuntu-18.04
 
         strategy:
@@ -17,18 +17,14 @@ jobs:
             matrix:
                 include:
                     - php-version: '5.5'
-                      database: mysql
-                      phpcr-transport: doctrinedbal
                       composer-flags: '--prefer-dist --prefer-lowest --no-interaction --prefer-stable'
                       tools: 'composer:v1'
                       env:
                           SYMFONY__DEPRECATIONS__HELPER: disabled
 
-                    - php-version: '7.3'
-                      database: mysql
-                      phpcr-transport: doctrinedbal
+                    - php-version: '7.4'
                       composer-flags: '--prefer-dist --no-interaction'
-                      tools: 'composer:v1'
+                      tools: 'composer:v2'
                       env:
                           SYMFONY__DEPRECATIONS__HELPER: weak
 
@@ -40,9 +36,7 @@ jobs:
               uses: shivammathur/setup-php@v2
               with:
                   php-version: ${{ matrix.php-version }}
-                  extensions: ${{ matrix.php-extensions }}
                   tools: ${{ matrix.tools }}
-                  coverage: none
 
             - name: Get composer cache directory
               id: composer-cache-dir
