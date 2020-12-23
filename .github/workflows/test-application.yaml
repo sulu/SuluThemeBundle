@@ -23,8 +23,6 @@ jobs:
             matrix:
                 include:
                     - php-version: '7.3'
-                      database: mysql
-                      phpcr-transport: doctrinedbal
                       composer-flags: '--prefer-lowest --prefer-stable --prefer-dist --no-interaction'
                       tools: 'composer:v1'
                       lint: false
@@ -32,12 +30,9 @@ jobs:
                           SYMFONY_DEPRECATIONS_HELPER: disabled
 
                     - php-version: '7.4'
-                      database: mysql
-                      phpcr-transport: doctrinedbal
                       composer-flags: '--prefer-dist --no-interaction'
                       tools: 'composer:v2'
                       lint: true
-                      php-extensions: 'imagick'
                       env:
                           SYMFONY_DEPRECATIONS_HELPER: disabled
 
@@ -58,7 +53,7 @@ jobs:
               uses: shivammathur/setup-php@v2
               with:
                   php-version: ${{ matrix.php-version }}
-                  extensions: ${{ matrix.php-extensions }}
+                  extensions: 'imagick'
                   tools: ${{ matrix.tools }}
 
             - name: Get composer cache directory
@@ -76,7 +71,7 @@ jobs:
 
             - name: Install dependencies
               run: |
-                  composer validate
+                  composer validate --strict
                   composer update ${{ matrix.composer-flags }}
 
             - name: Lint
