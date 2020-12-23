@@ -1,0 +1,61 @@
+name: Test application
+
+on:
+    pull_request:
+    push:
+        branches:
+            - master
+            - '[0-9]+.[0-9]+'
+
+jobs:
+    test:
+        name: "Run tests with php ${{ matrix.php-version }}"
+        runs-on: ubuntu-18.04
+
+        strategy:
+            fail-fast: false
+            matrix:
+                include:
+                    - php-version: '5.5'
+                      composer-flags: '--prefer-dist --prefer-lowest --no-interaction --prefer-stable'
+                      tools: 'composer:v1'
+                      env:
+                          SYMFONY__DEPRECATIONS__HELPER: disabled
+
+                    - php-version: '7.4'
+                      composer-flags: '--prefer-dist --no-interaction'
+                      tools: 'composer:v2'
+                      env:
+                          SYMFONY__DEPRECATIONS__HELPER: weak
+
+        steps:
+            - name: Checkout project
+              uses: actions/checkout@v2
+
+            - name: Install and configure PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ matrix.php-version }}
+                  tools: ${{ matrix.tools }}
+
+            - name: Get composer cache directory
+              id: composer-cache-dir
+              run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+            - name: Cache dependencies
+              uses: actions/cache@v2
+              id: composer-cache
+              with:
+                  path: ${{ steps.composer-cache-dir.outputs.dir }}
+                  key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
+                  restore-keys: |
+                      ${{ runner.os }}-composer-
+
+            - name: Install dependencies
+              run: |
+                  composer validate --strict
+                  composer update ${{ matrix.composer-flags }}
+
+            - name: Run tests
+              run: time vendor/bin/phpunit
+              env: ${{ matrix.env }}
