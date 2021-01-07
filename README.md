@@ -7,17 +7,17 @@
 </p>
 
 <p align="center">
-    <a href="https://github.com/sulu/SuluThemeBundle/releases" target="_blank">
-        <img src="https://img.shields.io/github/tag/sulu/SuluThemeBundle.svg" alt="GitHub tag (latest SemVer)">
-    </a>
     <a href="https://github.com/sulu/SuluThemeBundle/blob/master/LICENSE" target="_blank">
         <img src="https://img.shields.io/github/license/sulu/SuluThemeBundle.svg" alt="GitHub license">
     </a>
-    <a href="https://github.com/sulu/sulu/releases" target="_blank">
-        <img src="https://img.shields.io/badge/sulu%20compatibility-%3E=2.0-52b6ca.svg" alt="Sulu compatibility">
+    <a href="https://github.com/sulu/SuluThemeBundle/releases" target="_blank">
+        <img src="https://img.shields.io/github/tag/sulu/SuluThemeBundle.svg" alt="GitHub tag (latest SemVer)">
     </a>
     <a href="https://github.com/sulu/SuluThemeBundle/actions" target="_blank">
         <img src="https://img.shields.io/github/workflow/status/sulu/SuluThemeBundle/Test%20application.svg?label=test-workflow" alt="Test workflow status">
+    </a>
+    <a href="https://github.com/sulu/sulu/releases" target="_blank">
+        <img src="https://img.shields.io/badge/sulu%20compatibility-%3E=2.0-52b6ca.svg" alt="Sulu compatibility">
     </a>
 </p>
 <br/>
