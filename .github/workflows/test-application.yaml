@@ -16,8 +16,8 @@ jobs:
             fail-fast: false
             matrix:
                 include:
-                    - php-version: '5.5'
-                      composer-flags: '--prefer-dist --prefer-lowest --no-interaction --prefer-stable'
+                    - php-version: '7.3'
+                      composer-flags: '--prefer-lowest --prefer-stable --prefer-dist --no-interaction'
                       tools: 'composer:v1'
                       env:
                           SYMFONY__DEPRECATIONS__HELPER: disabled
