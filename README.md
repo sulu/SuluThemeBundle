@@ -7,7 +7,7 @@
 </p>
 
 <p align="center">
-    <a href="https://github.com/sulu/SuluThemeBundle/blob/master/LICENSE" target="_blank">
+    <a href="https://github.com/sulu/SuluThemeBundle/blob/3.x/LICENSE" target="_blank">
         <img src="https://img.shields.io/github/license/sulu/SuluThemeBundle.svg" alt="GitHub license">
     </a>
     <a href="https://github.com/sulu/SuluThemeBundle/releases" target="_blank">
