@@ -19,7 +19,7 @@
         "symfony/config": "^4.4 || ^5.0",
         "symfony/dependency-injection": "^4.4 || ^5.0",
         "symfony/http-kernel": "^4.4 || ^5.0",
-        "sylius/theme-bundle": "^2.0"
+        "sylius/theme-bundle": "^2.1"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.17",
