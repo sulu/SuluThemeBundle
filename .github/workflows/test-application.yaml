@@ -33,7 +33,7 @@ jobs:
                       tools: 'composer:v2'
                       lint: true
                       env:
-                          SYMFONY_DEPRECATIONS_HELPER: disabled
+                          SYMFONY_DEPRECATIONS_HELPER: weak
 
         services:
             mysql:
@@ -68,19 +68,18 @@ jobs:
                       ${{ runner.os }}-composer-
 
             - name: Install dependencies
-              run: |
-                  composer validate --strict
-                  composer update ${{ matrix.composer-flags }}
+              run: composer update ${{ matrix.composer-flags }}
 
-            - name: Lint
-              if: ${{ matrix.lint }}
-              run: |
-                  Tests/Application/bin/adminconsole cache:clear --env dev
-                  Tests/Application/bin/websiteconsole cache:clear --env dev
-                  composer lint
+            - name: Bootstrap test environment
+              run: composer bootstrap-test-environment
               env: ${{ matrix.env }}
 
-            - name: Run tests
-              run: composer test
+            - name: Lint code
+              if: ${{ matrix.lint }}
+              run: composer lint
+              env: ${{ matrix.env }}
+
+            - name: Execute test cases
+              run: time composer test
               env: ${{ matrix.env }}
 
