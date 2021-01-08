@@ -71,6 +71,10 @@ jobs:
             - name: Install dependencies
               run: composer update ${{ matrix.composer-flags }}
 
+            - name: Bootstrap test environment
+              run: composer bootstrap-test-environment
+              env: ${{ matrix.env }}
+
             - name: Lint code
               if: ${{ matrix.lint }}
               run: composer lint

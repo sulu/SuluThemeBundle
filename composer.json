@@ -26,6 +26,7 @@
         "jackalope/jackalope-doctrine-dbal": "^1.3",
         "jangregor/phpstan-prophecy": "^0.8",
         "phpstan/phpstan": "^0.12",
+        "phpstan/phpstan-doctrine": "^0.12",
         "phpstan/phpstan-phpunit": "^0.12",
         "phpstan/phpstan-symfony": "^0.12",
         "phpunit/phpunit": "^8.5.9",
@@ -40,11 +41,16 @@
         }
     },
     "scripts": {
+        "bootstrap-test-environment": [
+            "Tests/Application/bin/adminconsole doctrine:database:create --if-not-exists --env test",
+            "Tests/Application/bin/adminconsole doctrine:schema:update --force --env test"
+        ],
         "lint": [
             "@phpstan",
             "@php-cs",
             "@lint-container",
-            "@lint-composer"
+            "@lint-composer",
+            "@lint-doctrine"
         ],
         "test": [
             "@phpunit"
@@ -66,6 +72,10 @@
             "Tests/Application/bin/websiteconsole lint:container --env stage",
             "Tests/Application/bin/adminconsole lint:container --env prod",
             "Tests/Application/bin/websiteconsole lint:container --env prod"
+        ],
+        "lint-doctrine": [
+            "Tests/Application/bin/adminconsole doctrine:ensure-production-settings --env prod",
+            "Tests/Application/bin/adminconsole doctrine:schema:validate"
         ]
     },
     "config": {
