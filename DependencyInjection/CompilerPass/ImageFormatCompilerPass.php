@@ -27,7 +27,10 @@ class ImageFormatCompilerPass extends AbstractImageFormatCompilerPass
     {
         /** @var ThemeRepositoryInterface $themeRepository */
         $themeRepository = $container->get('sylius.repository.theme');
+
+        /** @var array<class-string> $bundles */
         $bundles = $container->getParameter('kernel.bundles');
+
         $configPath = 'config/image-formats.xml';
 
         $files = [];
