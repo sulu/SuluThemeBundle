@@ -173,4 +173,24 @@ class SetThemeEventListenerTest extends TestCase
 
         $this->assertSame($theme->reveal(), $this->themeContext->getTheme());
     }
+
+    public function testEventListenerOnPreviewNoTheme(): void
+    {
+        /** @var Webspace|ObjectProphecy webspace */
+        $webspace = $this->prophesize(Webspace::class);
+        $webspace->getTheme()->willReturn(null);
+
+        /** @var RequestAttributes|ObjectProphecy $attributes */
+        $attributes = $this->prophesize(RequestAttributes::class);
+        $attributes->getAttribute('webspace', null)->willReturn($webspace->reveal());
+
+        $this->themeRepository->findOneByName('theme/name')
+            ->shouldNotBeCalled();
+
+        $this->listener->setActiveThemeOnPreviewPreRender(
+            new PreRenderEvent($attributes->reveal())
+        );
+
+        $this->assertNull($this->themeContext->getTheme());
+    }
 }
