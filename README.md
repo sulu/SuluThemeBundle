@@ -77,14 +77,14 @@ For more detailed information about the configuration sources go to the [SyliusT
 
 ### Configure your themes
 
-Every theme must have its own configuration file in form of a `theme.json`.
+Every theme must have its own configuration file in form of a `composer.json`.
 Go to the [Theme Configuration Reference](https://github.com/Sylius/SyliusThemeBundle/blob/master/docs/theme_configuration_reference.md)
 for the detailed documentation about the configuration options.
 
 The minimal configuration for a theme would be the following:
 
 ```json
-// ./themes/<theme-name-1>/theme.json
+// ./themes/<theme-name-1>/composer.json
 
 {
   "name": "vendor/<theme-name-1>"
@@ -96,9 +96,9 @@ It is important, that the `name` matches the naming convention of composer (`ven
 ### Create a theme
 First you have to create the directory `themes` inside your project.
 To create a theme you have to create a new directory in the themes folder with the name of the new theme. 
-In the newly created directory you have to add the theme configuration file `theme.json`.
+In the newly created directory you have to add the theme configuration file `composer.json`.
 See [Configure your themes](#configure-your-themes). Additonally you have to create the `templates` directory next to 
-the `theme.json`. Afterwards you have to fill this folder with all the used templates and assets for this theme. 
+the `composer.json`. Afterwards you have to fill this folder with all the used templates and assets for this theme. 
 
 This results in the following project structure:
 
@@ -113,11 +113,11 @@ ProjectName
 │   ├── <theme-name-1>
 │   │   ├── templates
 │   │   │   └── base.html.twig
-│   │   └── theme.json
+│   │   └── composer.json
 │   └── <theme-name-2>
 │       ├── templates
 │       │   └── base.html.twig
-│       └── theme.json
+│       └── composer.json
 ├── ...
 └── ...
 ```
