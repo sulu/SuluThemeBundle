@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sulu\Bundle\ThemeBundle\EventListener;
 
 use Sulu\Bundle\PreviewBundle\Preview\Events\PreRenderEvent;
+use Sulu\Component\Webspace\Analyzer\Attributes\RequestAttributes;
 use Sylius\Bundle\ThemeBundle\Context\SettableThemeContext;
 use Sylius\Bundle\ThemeBundle\Repository\ThemeRepositoryInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -44,7 +45,10 @@ class SetThemeEventListener
      */
     public function setActiveThemeOnRequest(RequestEvent $event): void
     {
-        if (null === ($attributes = $event->getRequest()->get('_sulu'))
+        /** @var ?RequestAttributes $attributes */
+        $attributes = $event->getRequest()->get('_sulu');
+
+        if (null === $attributes
             || null === ($webspace = $attributes->getAttribute('webspace'))
             || null === ($theme = $webspace->getTheme())
         ) {

@@ -69,7 +69,7 @@ class SetThemeEventListenerTest extends TestCase
         /** @var RequestEvent|ObjectProphecy $event */
         $event = $this->prophesize(RequestEvent::class);
         $event->getRequest()->willReturn($request->reveal());
-        $event->isMasterRequest()->willReturn(true);
+        $event->isMainRequest()->willReturn(true);
 
         $this->themeRepository->findOneByName('theme/name')
             ->shouldBeCalled()
@@ -99,7 +99,7 @@ class SetThemeEventListenerTest extends TestCase
         /** @var RequestEvent|ObjectProphecy $event */
         $event = $this->prophesize(RequestEvent::class);
         $event->getRequest()->willReturn($request->reveal());
-        $event->isMasterRequest()->willReturn(false);
+        $event->isMainRequest()->willReturn(false);
 
         $this->themeRepository->findOneByName('theme/name')
             ->shouldBeCalled()
@@ -122,7 +122,7 @@ class SetThemeEventListenerTest extends TestCase
         /** @var RequestEvent|ObjectProphecy $event */
         $event = $this->prophesize(RequestEvent::class);
         $event->getRequest()->willReturn($request->reveal());
-        $event->isMasterRequest()->willReturn(true);
+        $event->isMainRequest()->willReturn(true);
 
         $this->themeRepository->findOneByName('theme/name')
             ->shouldNotBeCalled();
@@ -142,7 +142,7 @@ class SetThemeEventListenerTest extends TestCase
         /** @var RequestEvent|ObjectProphecy $event */
         $event = $this->prophesize(RequestEvent::class);
         $event->getRequest()->willReturn($request->reveal());
-        $event->isMasterRequest()->willReturn(true);
+        $event->isMainRequest()->willReturn(true);
 
         $this->themeRepository->findOneByName('theme/name')
             ->shouldNotBeCalled();
