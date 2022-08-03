@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of Sulu.
  *
@@ -23,9 +25,6 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  */
 class SuluThemeExtension extends Extension
 {
-    /**
-     * {@inheritdoc}
-     */
     public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
@@ -33,6 +32,6 @@ class SuluThemeExtension extends Extension
         /** @var string $context */
         $context = $container->getParameter('sulu.context');
 
-        $loader->load(sprintf('%s.xml', $context));
+        $loader->load(\sprintf('%s.xml', $context));
     }
 }

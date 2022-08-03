@@ -42,6 +42,13 @@ jobs:
                       env:
                           SYMFONY_DEPRECATIONS_HELPER: weak
 
+                    - php-version: '8.1'
+                        dependency-versions: 'highest'
+                        tools: 'composer:v2'
+                        lint: true
+                        env:
+                            SYMFONY_DEPRECATIONS_HELPER: weak
+
         services:
             mysql:
                 image: mysql:5.7

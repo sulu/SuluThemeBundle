@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of Sulu.
  *
@@ -40,7 +42,7 @@ class SetThemeEventListenerTest extends TestCase
      */
     private $listener;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->themeRepository = $this->prophesize(ThemeRepositoryInterface::class);
         $this->themeContext = new SettableThemeContext();
