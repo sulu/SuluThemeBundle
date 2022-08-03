@@ -16,9 +16,9 @@
     "require": {
         "php": "^7.2 || ^8.0",
         "sulu/sulu": "^2.3 || ^2.3@dev",
-        "symfony/config": "^4.4 || ^5.4 || ^6.0",
-        "symfony/dependency-injection": "^4.4 || ^5.4 || ^6.0",
-        "symfony/http-kernel": "^4.4 || ^5.4 || ^6.0",
+        "symfony/config": "^5.4 || ^6.0",
+        "symfony/dependency-injection": "^5.4 || ^6.0",
+        "symfony/http-kernel": "^5.4 || ^6.0",
         "sylius/theme-bundle": "^2.2 || 2.3.x-dev"
     },
     "require-dev": {
@@ -30,7 +30,7 @@
         "phpstan/phpstan-phpunit": "^1.0",
         "phpstan/phpstan-symfony": "^1.1",
         "phpunit/phpunit": "^8.5.9",
-        "symfony/dotenv": "^4.4 || ^5.4 || ^6.0",
+        "symfony/dotenv": "^5.4 || ^6.0",
         "symfony/monolog-bundle": "^3.1",
         "symfony/phpunit-bridge": "^5.2",
         "thecodingmachine/phpstan-strict-rules": "^1.0"
