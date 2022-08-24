@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sulu\Bundle\ThemeBundle\Tests\Unit\EventListener;
 
 use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use Sulu\Bundle\PreviewBundle\Preview\Events\PreRenderEvent;
 use Sulu\Bundle\ThemeBundle\EventListener\SetThemeEventListener;
@@ -24,6 +25,7 @@ use Sylius\Bundle\ThemeBundle\Model\ThemeInterface;
 use Sylius\Bundle\ThemeBundle\Repository\ThemeRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 class SetThemeEventListenerTest extends TestCase
 {
@@ -52,102 +54,82 @@ class SetThemeEventListenerTest extends TestCase
 
     public function testEventListener(): void
     {
-        /** @var Webspace|ObjectProphecy webspace */
-        $webspace = $this->prophesize(Webspace::class);
-        $webspace->getTheme()->willReturn('theme/name');
+        $webspace = new Webspace();
+        $webspace->setTheme('theme/name');
 
         /** @var ThemeInterface|ObjectProphecy $theme */
         $theme = $this->prophesize(ThemeInterface::class);
 
-        /** @var Request|ObjectProphecy $request */
-        $request = $this->prophesize(Request::class);
-        /** @var RequestAttributes|ObjectProphecy $attributes */
-        $attributes = $this->prophesize(RequestAttributes::class);
-        $attributes->getAttribute('webspace')->willReturn($webspace->reveal());
-        $request->get('_sulu')->willReturn($attributes->reveal());
+        $request = new Request();
+        $requestAttributes = new RequestAttributes([
+            'webspace' => $webspace,
+        ]);;
+        $request->attributes->set('_sulu', $requestAttributes);
 
-        /** @var RequestEvent|ObjectProphecy $event */
-        $event = $this->prophesize(RequestEvent::class);
-        $event->getRequest()->willReturn($request->reveal());
-        $event->isMainRequest()->willReturn(true);
+        $event = $this->createRequestEvent($request);
 
         $this->themeRepository->findOneByName('theme/name')
             ->shouldBeCalled()
             ->willReturn($theme->reveal());
 
-        $this->listener->setActiveThemeOnRequest($event->reveal());
+        $this->listener->setActiveThemeOnRequest($event);
 
         $this->assertSame($theme->reveal(), $this->themeContext->getTheme());
     }
 
     public function testEventListenerNotMaster(): void
     {
-        /** @var Webspace|ObjectProphecy webspace */
-        $webspace = $this->prophesize(Webspace::class);
-        $webspace->getTheme()->willReturn('theme/name');
+        $webspace = new Webspace();
+        $webspace->setTheme('theme/name');
 
         /** @var ThemeInterface|ObjectProphecy $theme */
         $theme = $this->prophesize(ThemeInterface::class);
 
-        /** @var Request|ObjectProphecy $request */
-        $request = $this->prophesize(Request::class);
-        /** @var RequestAttributes|ObjectProphecy $attributes */
-        $attributes = $this->prophesize(RequestAttributes::class);
-        $attributes->getAttribute('webspace')->willReturn($webspace->reveal());
-        $request->get('_sulu')->willReturn($attributes->reveal());
+        $request = new Request();
+        $requestAttributes = new RequestAttributes([
+            'webspace' => $webspace,
+        ]);
+        $request->attributes->set('_sulu', $requestAttributes);
 
-        /** @var RequestEvent|ObjectProphecy $event */
-        $event = $this->prophesize(RequestEvent::class);
-        $event->getRequest()->willReturn($request->reveal());
-        $event->isMainRequest()->willReturn(false);
+        $event = $this->createRequestEvent($request);
 
         $this->themeRepository->findOneByName('theme/name')
             ->shouldBeCalled()
             ->willReturn($theme->reveal());
 
-        $this->listener->setActiveThemeOnRequest($event->reveal());
+        $this->listener->setActiveThemeOnRequest($event);
 
         $this->assertSame($theme->reveal(), $this->themeContext->getTheme());
     }
 
     public function testEventListenerNoWebspace(): void
     {
-        /** @var Request|ObjectProphecy $request */
-        $request = $this->prophesize(Request::class);
-        /** @var RequestAttributes|ObjectProphecy $attributes */
-        $attributes = $this->prophesize(RequestAttributes::class);
-        $attributes->getAttribute('webspace')->willReturn(null);
-        $request->get('_sulu')->willReturn($attributes->reveal());
+        $request = new Request();
+        $requestAttributes = new RequestAttributes([
+            'webspace' => null,
+        ]);
+        $request->attributes->set('_sulu', $requestAttributes);
 
-        /** @var RequestEvent|ObjectProphecy $event */
-        $event = $this->prophesize(RequestEvent::class);
-        $event->getRequest()->willReturn($request->reveal());
-        $event->isMainRequest()->willReturn(true);
+        $event = $this->createRequestEvent($request);
 
-        $this->themeRepository->findOneByName('theme/name')
+        $this->themeRepository->findOneByName(Argument::cetera())
             ->shouldNotBeCalled();
 
-        $this->listener->setActiveThemeOnRequest($event->reveal());
+        $this->listener->setActiveThemeOnRequest($event);
 
         $this->assertNull($this->themeContext->getTheme());
     }
 
     public function testEventListenerNoAttributes(): void
     {
-        /** @var Request|ObjectProphecy $request */
-        $request = $this->prophesize(Request::class);
-        /* @var RequestAttributes|ObjectProphecy $attributes */
-        $request->get('_sulu')->willReturn(null);
+        $request = new Request();
 
-        /** @var RequestEvent|ObjectProphecy $event */
-        $event = $this->prophesize(RequestEvent::class);
-        $event->getRequest()->willReturn($request->reveal());
-        $event->isMainRequest()->willReturn(true);
+        $event = $this->createRequestEvent($request);
 
-        $this->themeRepository->findOneByName('theme/name')
+        $this->themeRepository->findOneByName(Argument::cetera())
             ->shouldNotBeCalled();
 
-        $this->listener->setActiveThemeOnRequest($event->reveal());
+        $this->listener->setActiveThemeOnRequest($event);
 
         $this->assertNull($this->themeContext->getTheme());
     }
@@ -161,16 +143,16 @@ class SetThemeEventListenerTest extends TestCase
         $webspace = $this->prophesize(Webspace::class);
         $webspace->getTheme()->willReturn('theme/name');
 
-        /** @var RequestAttributes|ObjectProphecy $attributes */
-        $attributes = $this->prophesize(RequestAttributes::class);
-        $attributes->getAttribute('webspace', null)->willReturn($webspace->reveal());
+        $requestAttributes = new RequestAttributes([
+            'webspace' => $webspace->reveal(),
+        ]);
 
         $this->themeRepository->findOneByName('theme/name')
             ->shouldBeCalled()
             ->willReturn($theme->reveal());
 
         $this->listener->setActiveThemeOnPreviewPreRender(
-            new PreRenderEvent($attributes->reveal())
+            new PreRenderEvent($requestAttributes)
         );
 
         $this->assertSame($theme->reveal(), $this->themeContext->getTheme());
@@ -178,21 +160,31 @@ class SetThemeEventListenerTest extends TestCase
 
     public function testEventListenerOnPreviewNoTheme(): void
     {
-        /** @var Webspace|ObjectProphecy webspace */
-        $webspace = $this->prophesize(Webspace::class);
-        $webspace->getTheme()->willReturn(null);
+        $webspace = new Webspace();
+        $webspace->setTheme(null);
 
-        /** @var RequestAttributes|ObjectProphecy $attributes */
-        $attributes = $this->prophesize(RequestAttributes::class);
-        $attributes->getAttribute('webspace', null)->willReturn($webspace->reveal());
+        $requestAttributes = new RequestAttributes([
+            'webspace' => $webspace,
+        ]);
 
-        $this->themeRepository->findOneByName('theme/name')
+        $this->themeRepository->findOneByName(Argument::cetera())
             ->shouldNotBeCalled();
 
         $this->listener->setActiveThemeOnPreviewPreRender(
-            new PreRenderEvent($attributes->reveal())
+            new PreRenderEvent($requestAttributes)
         );
 
         $this->assertNull($this->themeContext->getTheme());
+    }
+
+    private function createRequestEvent(Request $request): RequestEvent
+    {
+        $kernel = $this->prophesize(HttpKernelInterface::class);
+
+        return new RequestEvent(
+            $kernel->reveal(),
+            $request,
+            HttpKernelInterface::MAIN_REQUEST
+        );
     }
 }
