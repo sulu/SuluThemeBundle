@@ -36,6 +36,10 @@
         "symfony/phpunit-bridge": "^5.2",
         "thecodingmachine/phpstan-strict-rules": "^1.0"
     },
+    "conflict": {
+        "dantleech/phpcr-migrations-bundle": "<1.2",
+        "friendsofsymfony/jsrouting-bundle": "<2.6"
+    },
     "autoload": {
         "psr-4": {
             "Sulu\\Bundle\\ThemeBundle\\": ""
