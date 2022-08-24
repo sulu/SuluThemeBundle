@@ -63,7 +63,7 @@ class SetThemeEventListenerTest extends TestCase
         $request = new Request();
         $requestAttributes = new RequestAttributes([
             'webspace' => $webspace,
-        ]);;
+        ]);
         $request->attributes->set('_sulu', $requestAttributes);
 
         $event = $this->createRequestEvent($request);
