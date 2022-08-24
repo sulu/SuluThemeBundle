@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of Sulu.
  *
@@ -20,9 +22,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 class ImageFormatCompilerPass extends AbstractImageFormatCompilerPass
 {
-    /**
-     * {@inheritdoc}
-     */
     protected function getFiles(ContainerBuilder $container)
     {
         /** @var ThemeRepositoryInterface $themeRepository */
@@ -35,7 +34,7 @@ class ImageFormatCompilerPass extends AbstractImageFormatCompilerPass
 
         $files = [];
         foreach ($themeRepository->findAll() as $theme) {
-            foreach ($bundles as $bundleName => $bundle) {
+            foreach ($bundles as $bundle) {
                 $bundleReflection = new \ReflectionClass($bundle);
                 $fileName = $bundleReflection->getFileName();
 
@@ -43,14 +42,14 @@ class ImageFormatCompilerPass extends AbstractImageFormatCompilerPass
                     continue;
                 }
 
-                $path = sprintf(
+                $path = \sprintf(
                     '%s/Resources/themes/%s/%s',
-                    dirname($fileName),
+                    \dirname($fileName),
                     $theme->getName(),
                     $configPath
                 );
 
-                if (file_exists($path)) {
+                if (\file_exists($path)) {
                     $files[] = $path;
                 }
             }

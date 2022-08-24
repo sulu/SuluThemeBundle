@@ -23,22 +23,21 @@ jobs:
                 include:
                     - php-version: '7.3'
                       dependency-versions: 'lowest'
-                      tools: 'composer:v1'
-                      lint: false
                       env:
                           SYMFONY_DEPRECATIONS_HELPER: disabled
 
                     - php-version: '7.4'
                       dependency-versions: 'highest'
-                      tools: 'composer:v2'
-                      lint: true
                       env:
                           SYMFONY_DEPRECATIONS_HELPER: weak
 
                     - php-version: '8.0'
                       dependency-versions: 'highest'
-                      tools: 'composer:v2'
-                      lint: true
+                      env:
+                          SYMFONY_DEPRECATIONS_HELPER: weak
+
+                    - php-version: '8.1'
+                      dependency-versions: 'highest'
                       env:
                           SYMFONY_DEPRECATIONS_HELPER: weak
 
@@ -60,7 +59,7 @@ jobs:
               with:
                   php-version: ${{ matrix.php-version }}
                   extensions: 'imagick'
-                  tools: ${{ matrix.tools }}
+                  tools: 'composer:v2'
 
             - name: Install composer dependencies
               uses: ramsey/composer-install@v1
@@ -71,12 +70,29 @@ jobs:
               run: composer bootstrap-test-environment
               env: ${{ matrix.env }}
 
-            - name: Lint code
-              if: ${{ matrix.lint }}
-              run: composer lint
-              env: ${{ matrix.env }}
-
             - name: Execute test cases
               run: time composer test
               env: ${{ matrix.env }}
 
+    lint:
+        name: 'PHP Lint'
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout project
+              uses: actions/checkout@v2
+
+            - name: Install and configure PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: 8.1
+                  extensions: 'imagick'
+                  tools: 'composer:v2'
+
+            - name: Install composer dependencies
+              uses: ramsey/composer-install@v1
+              with:
+                  dependency-versions: ${{matrix.dependency-versions}}
+
+            - name: Lint code
+              run: composer lint

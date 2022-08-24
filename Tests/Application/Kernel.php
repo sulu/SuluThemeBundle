@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of Sulu.
  *
@@ -18,20 +20,14 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 
 class Kernel extends SuluTestKernel
 {
-    /**
-     * {@inheritdoc}
-     */
     public function __construct($environment, $debug, $suluContext = self::CONTEXT_ADMIN)
     {
         parent::__construct($environment, $debug, $suluContext);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function registerBundles()
+    public function registerBundles(): iterable
     {
-        return array_merge(
+        return \array_merge(
             parent::registerBundles(),
             [
                 new SyliusThemeBundle(),
@@ -40,9 +36,6 @@ class Kernel extends SuluTestKernel
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function registerContainerConfiguration(LoaderInterface $loader): void
     {
         parent::registerContainerConfiguration($loader);
@@ -50,7 +43,7 @@ class Kernel extends SuluTestKernel
         $loader->load(__DIR__ . '/config/config_' . $this->getContext() . '.yaml');
     }
 
-    protected function getKernelParameters()
+    protected function getKernelParameters(): array
     {
         $parameters = parent::getKernelParameters();
 
