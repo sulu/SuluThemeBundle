@@ -34,8 +34,10 @@ $config->setRiskyAllowed(true)
     ])
     ->setFinder(
         PhpCsFixer\Finder::create()
+            ->exclude('node_modules')
             ->exclude('vendor')
             ->exclude('cache')
+            ->exclude('Tests/Application/var/')
             ->exclude('Tests/reports/')
             ->in(__DIR__)
     );
