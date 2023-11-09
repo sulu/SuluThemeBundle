@@ -34,6 +34,11 @@ class ImageFormatCompilerPass extends AbstractImageFormatCompilerPass
 
         $files = [];
         foreach ($themeRepository->findAll() as $theme) {
+            // Add theme config if exists
+            if (\file_exists($theme->getPath() . '/' . $configPath)) {
+                $files[] = $theme->getPath() . '/' . $configPath;
+            }
+
             foreach ($bundles as $bundle) {
                 $bundleReflection = new \ReflectionClass($bundle);
                 $fileName = $bundleReflection->getFileName();
