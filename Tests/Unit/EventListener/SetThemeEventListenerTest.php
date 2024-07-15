@@ -15,6 +15,7 @@ namespace Sulu\Bundle\ThemeBundle\Tests\Unit\EventListener;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Sulu\Bundle\PreviewBundle\Preview\Events\PreRenderEvent;
 use Sulu\Bundle\ThemeBundle\EventListener\SetThemeEventListener;
@@ -29,6 +30,8 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 class SetThemeEventListenerTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @var ThemeRepositoryInterface|ObjectProphecy
      */

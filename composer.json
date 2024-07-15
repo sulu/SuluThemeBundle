@@ -26,6 +26,7 @@
         "jangregor/phpstan-prophecy": "^1.0",
         "php-cs-fixer/shim": "^3.1",
         "phpspec/prophecy": "^1.15",
+        "phpspec/prophecy-phpunit": "^2.0",
         "phpstan/phpstan": "^1.4",
         "phpstan/phpstan-doctrine": "^1.2",
         "phpstan/phpstan-phpunit": "^1.0",
