@@ -41,6 +41,16 @@ jobs:
                       env:
                           SYMFONY_DEPRECATIONS_HELPER: weak
 
+                    - php-version: '8.2'
+                      dependency-versions: 'highest'
+                      env:
+                          SYMFONY_DEPRECATIONS_HELPER: weak
+
+                    - php-version: '8.3'
+                      dependency-versions: 'highest'
+                      env:
+                          SYMFONY_DEPRECATIONS_HELPER: weak
+
         services:
             mysql:
                 image: mysql:5.7
@@ -52,17 +62,21 @@ jobs:
 
         steps:
             - name: Checkout project
-              uses: actions/checkout@v2
+              uses: actions/checkout@v4
 
             - name: Install and configure PHP
               uses: shivammathur/setup-php@v2
               with:
                   php-version: ${{ matrix.php-version }}
-                  extensions: 'imagick'
                   tools: 'composer:v2'
 
+            - name: Remove Lint Tools
+              # These tools are not required to run tests, so we are removing them to improve dependency resolving and
+              # testing lowest versions.
+              run: composer remove "*php-cs-fixer*" "*phpstan*" "*rector*" --dev --no-update
+
             - name: Install composer dependencies
-              uses: ramsey/composer-install@v1
+              uses: ramsey/composer-install@v2
               with:
                   dependency-versions: ${{matrix.dependency-versions}}
 
@@ -80,17 +94,16 @@ jobs:
 
         steps:
             - name: Checkout project
-              uses: actions/checkout@v2
+              uses: actions/checkout@v4
 
             - name: Install and configure PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: 8.1
-                  extensions: 'imagick'
+                  php-version: 8.3
                   tools: 'composer:v2'
 
             - name: Install composer dependencies
-              uses: ramsey/composer-install@v1
+              uses: ramsey/composer-install@v2
               with:
                   dependency-versions: ${{matrix.dependency-versions}}
 
