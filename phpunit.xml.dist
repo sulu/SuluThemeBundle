@@ -1,29 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit bootstrap="Tests/test-bootstrap.php" colors="true">
-
     <testsuites>
-        <testsuite name="SuluThemeBundle Test Suite">
-            <directory suffix="Test.php">./Tests</directory>
+        <testsuite name="Sulu Theme Bundle">
+            <directory>./Tests</directory>
         </testsuite>
     </testsuites>
 
-    <filter>
-        <whitelist>
-            <directory>./</directory>
-            <exclude>
-                <directory>./Tests</directory>
-                <directory>./vendor</directory>
-            </exclude>
-        </whitelist>
-    </filter>
-
     <php>
-        <env name="SYMFONY_PHPUNIT_VERSION" value="8.0"/>
-        <env name="APP_ENV" value="test"/>
-        <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak"/>
+        <env name="KERNEL_CLASS" value="Sulu\Bundle\ThemeBundle\Tests\Application\Kernel"/>
+        <env name="APP_ENV" value="test" force="true"/>
     </php>
 
-    <listeners>
-        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
-    </listeners>
+    <source>
+        <include>
+            <directory>./</directory>
+        </include>
+        <exclude>
+            <directory>Resources/</directory>
+            <directory>Tests/</directory>
+            <directory>vendor/</directory>
+        </exclude>
+    </source>
 </phpunit>

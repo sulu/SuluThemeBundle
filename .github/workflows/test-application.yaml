@@ -23,11 +23,13 @@ jobs:
                 include:
                     - php-version: '7.3'
                       dependency-versions: 'lowest'
+                      phpunit-config: 'phpunit-9.xml.dist'
                       env:
                           SYMFONY_DEPRECATIONS_HELPER: disabled
 
                     - php-version: '7.4'
                       dependency-versions: 'highest'
+                      phpunit-config: 'phpunit-9.xml.dist'
                       env:
                           SYMFONY_DEPRECATIONS_HELPER: weak
 
@@ -48,6 +50,12 @@ jobs:
 
                     - php-version: '8.3'
                       dependency-versions: 'highest'
+                      env:
+                          SYMFONY_DEPRECATIONS_HELPER: weak
+
+                    - php-version: '8.4'
+                      dependency-versions: 'highest'
+                      composer-options: '--ignore-platform-reqs'
                       env:
                           SYMFONY_DEPRECATIONS_HELPER: weak
 
@@ -79,13 +87,14 @@ jobs:
               uses: ramsey/composer-install@v2
               with:
                   dependency-versions: ${{matrix.dependency-versions}}
+                  composer-options: ${{ matrix.composer-options }}
 
             - name: Bootstrap test environment
               run: composer bootstrap-test-environment
               env: ${{ matrix.env }}
 
             - name: Execute test cases
-              run: time composer test
+              run: time composer test -- --config ${{ matrix.phpunit-config || 'phpunit.xml.dist' }}
               env: ${{ matrix.env }}
 
     lint:
