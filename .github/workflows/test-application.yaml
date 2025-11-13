@@ -55,6 +55,12 @@ jobs:
 
                     - php-version: '8.4'
                       dependency-versions: 'highest'
+                      env:
+                          SYMFONY_DEPRECATIONS_HELPER: weak
+
+                    - php-version: '8.4'
+                      dependency-versions: 'highest'
+                      composer-stability: 'dev'
                       composer-options: '--ignore-platform-reqs'
                       env:
                           SYMFONY_DEPRECATIONS_HELPER: weak
@@ -82,6 +88,10 @@ jobs:
               # These tools are not required to run tests, so we are removing them to improve dependency resolving and
               # testing lowest versions.
               run: composer remove "*php-cs-fixer*" "*phpstan*" "*rector*" --dev --no-update
+
+            - name: Set composer stability
+              if: ${{ matrix.composer-stability }}
+              run: composer config minimum-stability ${{ matrix.composer-stability }}
 
             - name: Install composer dependencies
               uses: ramsey/composer-install@v2

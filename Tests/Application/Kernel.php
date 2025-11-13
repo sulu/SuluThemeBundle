@@ -41,6 +41,19 @@ class Kernel extends SuluTestKernel
         parent::registerContainerConfiguration($loader);
 
         $loader->load(__DIR__ . '/config/config_' . $this->getContext() . '.yaml');
+
+        $bundles = $this->registerBundles();
+        $hasMassiveSearchBundle = false;
+        foreach ($bundles as $bundle) {
+            if ($bundle instanceof \Massive\Bundle\SearchBundle\MassiveSearchBundle) {
+                $hasMassiveSearchBundle = true;
+                break;
+            }
+        }
+
+        if ($hasMassiveSearchBundle) {
+            $loader->load(__DIR__ . '/config/config_massive_search.yaml');
+        }
     }
 
     protected function getKernelParameters(): array
