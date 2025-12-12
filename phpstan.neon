@@ -16,8 +16,8 @@ parameters:
         - %currentWorkingDirectory%/vendor/*
         - %currentWorkingDirectory%/Tests/Application/*
     symfony:
-        container_xml_path: %rootDir%/../../../Tests/Application/var/cache/admin/dev/Sulu_Bundle_ThemeBundle_Tests_Application_KernelDevDebugContainer.xml
-        console_application_loader: Tests/phpstan/console-application.php
+        containerXmlPath: %rootDir%/../../../Tests/Application/var/cache/admin/dev/Sulu_Bundle_ThemeBundle_Tests_Application_KernelDevDebugContainer.xml
+        consoleApplicationLoader: Tests/phpstan/console-application.php
         constantHassers: false
     doctrine:
         objectManagerLoader: Tests/phpstan/object-manager.php
