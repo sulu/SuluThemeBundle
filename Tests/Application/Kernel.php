@@ -17,6 +17,7 @@ use Sulu\Bundle\TestBundle\Kernel\SuluTestKernel;
 use Sulu\Bundle\ThemeBundle\SuluThemeBundle;
 use Sylius\Bundle\ThemeBundle\SyliusThemeBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\Security\Bundle\SecurityBundle;
 
 class Kernel extends SuluTestKernel
 {
@@ -27,12 +28,23 @@ class Kernel extends SuluTestKernel
 
     public function registerBundles(): iterable
     {
+        $bundles = [
+            new SyliusThemeBundle(),
+            new SuluThemeBundle(),
+        ];
+
+        // Register SecurityBundle for website context (already registered for admin in parent)
+        if (self::CONTEXT_WEBSITE === $this->getContext()) {
+            $bundles[] = new SecurityBundle();
+        }
+
         return \array_merge(
             parent::registerBundles(),
-            [
-                new SyliusThemeBundle(),
-                new SuluThemeBundle(),
-            ]
+            $bundles
+        );
+
+        return \array_merge(
+            parent::registerBundles(),
         );
     }
 
