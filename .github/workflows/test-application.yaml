@@ -64,7 +64,7 @@ jobs:
 
             - name: Start Database
               run: |
-                  docker compose -f tests/docker/docker-compose.${{ matrix.database }}.yml up --wait
+                  docker compose -f Tests/docker/docker-compose.${{ matrix.database }}.yml up --wait
 
             - name: Install and configure PHP
               uses: shivammathur/setup-php@v2
