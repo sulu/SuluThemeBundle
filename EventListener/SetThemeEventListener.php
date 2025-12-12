@@ -15,6 +15,7 @@ namespace Sulu\Bundle\ThemeBundle\EventListener;
 
 use Sulu\Bundle\PreviewBundle\Preview\Events\PreRenderEvent;
 use Sulu\Component\Webspace\Analyzer\Attributes\RequestAttributes;
+use Sulu\Component\Webspace\Webspace;
 use Sylius\Bundle\ThemeBundle\Context\SettableThemeContext;
 use Sylius\Bundle\ThemeBundle\Repository\ThemeRepositoryInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -48,10 +49,10 @@ class SetThemeEventListener
         /** @var ?RequestAttributes $attributes */
         $attributes = $event->getRequest()->get('_sulu');
 
-        if (null === $attributes
-            || null === ($webspace = $attributes->getAttribute('webspace'))
-            || null === ($theme = $webspace->getTheme())
-        ) {
+        /** @var ?Webspace $webspace */
+        $webspace = $attributes?->getAttribute('webspace');
+
+        if (null === ($theme = $webspace?->getTheme())) {
             return;
         }
 
@@ -66,7 +67,10 @@ class SetThemeEventListener
      */
     public function setActiveThemeOnPreviewPreRender(PreRenderEvent $event): void
     {
-        $themeName = $event->getAttribute('webspace')->getTheme();
+        /** @var ?Webspace $webspace */
+        $webspace = $event->getAttribute('webspace');
+
+        $themeName = $webspace?->getTheme();
         if (null === $themeName) {
             return;
         }

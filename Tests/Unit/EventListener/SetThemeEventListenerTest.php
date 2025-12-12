@@ -33,7 +33,7 @@ class SetThemeEventListenerTest extends TestCase
     use ProphecyTrait;
 
     /**
-     * @var ThemeRepositoryInterface|ObjectProphecy
+     * @var ObjectProphecy<ThemeRepositoryInterface>
      */
     private $themeRepository;
 
@@ -60,7 +60,6 @@ class SetThemeEventListenerTest extends TestCase
         $webspace = new Webspace();
         $webspace->setTheme('theme/name');
 
-        /** @var ThemeInterface|ObjectProphecy $theme */
         $theme = $this->prophesize(ThemeInterface::class);
 
         $request = new Request();
@@ -85,7 +84,6 @@ class SetThemeEventListenerTest extends TestCase
         $webspace = new Webspace();
         $webspace->setTheme('theme/name');
 
-        /** @var ThemeInterface|ObjectProphecy $theme */
         $theme = $this->prophesize(ThemeInterface::class);
 
         $request = new Request();
@@ -139,10 +137,8 @@ class SetThemeEventListenerTest extends TestCase
 
     public function testEventListenerOnPreview(): void
     {
-        /** @var ThemeInterface|ObjectProphecy $theme */
         $theme = $this->prophesize(ThemeInterface::class);
 
-        /** @var Webspace|ObjectProphecy webspace */
         $webspace = $this->prophesize(Webspace::class);
         $webspace->getTheme()->willReturn('theme/name');
 

@@ -16,6 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 
 require \dirname(__DIR__) . '/Application/config/bootstrap.php';
 
+/** @var array<string, string> $_SERVER */
 $kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG'], Kernel::CONTEXT_ADMIN);
 $kernel->boot();
 
