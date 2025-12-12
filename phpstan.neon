@@ -13,7 +13,6 @@ parameters:
         processTimeout: 300.0 
     level: max
     excludePaths:
-        - %currentWorkingDirectory%/DependencyInjection/Configuration.php
         - %currentWorkingDirectory%/vendor/*
         - %currentWorkingDirectory%/Tests/Application/*
     symfony:
