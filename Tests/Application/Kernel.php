@@ -16,8 +16,8 @@ namespace Sulu\Bundle\ThemeBundle\Tests\Application;
 use Sulu\Bundle\TestBundle\Kernel\SuluTestKernel;
 use Sulu\Bundle\ThemeBundle\SuluThemeBundle;
 use Sylius\Bundle\ThemeBundle\SyliusThemeBundle;
+use Symfony\Bundle\SecurityBundle\SecurityBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
-use Symfony\Component\Security\Bundle\SecurityBundle;
 
 class Kernel extends SuluTestKernel
 {
@@ -38,14 +38,7 @@ class Kernel extends SuluTestKernel
             $bundles[] = new SecurityBundle();
         }
 
-        return \array_merge(
-            parent::registerBundles(),
-            $bundles
-        );
-
-        return \array_merge(
-            parent::registerBundles(),
-        );
+        return \array_merge(parent::registerBundles(), $bundles);
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader): void
