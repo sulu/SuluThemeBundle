@@ -6,14 +6,22 @@ on:
         branches:
             - '[0-9]+.x'
             - '[0-9]+.[0-9]+'
+    workflow_dispatch:
+
+env:
+    CI_GROUP_OUTPUT: true
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
 
 jobs:
     test:
-        name: 'PHP ${{ matrix.php-version }} (${{ matrix.dependency-versions }})'
+        name: "PHP ${{ matrix.php-version }} (${{ matrix.database }}, ${{ matrix.dependency-versions }})"
         runs-on: ubuntu-latest
+        timeout-minutes: 30
 
         env:
-            DATABASE_URL: mysql://root:root@127.0.0.1:3306/su_theme_test?serverVersion=5.7
             DATABASE_CHARSET: utf8mb4
             DATABASE_COLLATE: utf8mb4_unicode_ci
 
@@ -21,56 +29,42 @@ jobs:
             fail-fast: false
             matrix:
                 include:
-                    - php-version: '7.3'
+                    - php-version: '8.2'
                       dependency-versions: 'lowest'
-                      phpunit-config: 'phpunit-9.xml.dist'
+                      database: mysql-57
                       env:
                           SYMFONY_DEPRECATIONS_HELPER: disabled
-
-                    - php-version: '7.4'
-                      dependency-versions: 'highest'
-                      phpunit-config: 'phpunit-9.xml.dist'
-                      env:
-                          SYMFONY_DEPRECATIONS_HELPER: weak
-
-                    - php-version: '8.0'
-                      dependency-versions: 'highest'
-                      env:
-                          SYMFONY_DEPRECATIONS_HELPER: weak
-
-                    - php-version: '8.1'
-                      dependency-versions: 'highest'
-                      env:
-                          SYMFONY_DEPRECATIONS_HELPER: weak
+                          DATABASE_URL: mysql://root:root@127.0.0.1:3306/su_theme_test?serverVersion=5.7
 
                     - php-version: '8.2'
                       dependency-versions: 'highest'
+                      database: mysql-80
                       env:
                           SYMFONY_DEPRECATIONS_HELPER: weak
+                          DATABASE_URL: mysql://root:root@127.0.0.1:3306/su_theme_test?serverVersion=8.0
+
 
                     - php-version: '8.3'
+                      database: mysql-80
                       dependency-versions: 'highest'
                       env:
                           SYMFONY_DEPRECATIONS_HELPER: weak
+                          DATABASE_URL: mysql://root:root@127.0.0.1:3306/su_theme_test?serverVersion=8.0
 
                     - php-version: '8.4'
+                      database: mysql-84
                       dependency-versions: 'highest'
-                      composer-options: '--ignore-platform-reqs'
                       env:
                           SYMFONY_DEPRECATIONS_HELPER: weak
-
-        services:
-            mysql:
-                image: mysql:5.7
-                env:
-                    MYSQL_ROOT_PASSWORD: root
-                ports:
-                    - 3306:3306
-                options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=5
+                          DATABASE_URL: mysql://root:root@127.0.0.1:3306/su_theme_test?serverVersion=8.4
 
         steps:
             - name: Checkout project
               uses: actions/checkout@v4
+
+            - name: Start Database
+              run: |
+                  docker compose -f tests/docker/docker-compose.${{ matrix.database }}.yml up --wait
 
             - name: Install and configure PHP
               uses: shivammathur/setup-php@v2
@@ -94,7 +88,7 @@ jobs:
               env: ${{ matrix.env }}
 
             - name: Execute test cases
-              run: time composer test -- --config ${{ matrix.phpunit-config || 'phpunit.xml.dist' }}
+              run: time composer test
               env: ${{ matrix.env }}
 
     lint:
@@ -112,9 +106,9 @@ jobs:
                   tools: 'composer:v2'
 
             - name: Install composer dependencies
-              uses: ramsey/composer-install@v2
+              uses: ramsey/composer-install@v3
               with:
-                  dependency-versions: ${{matrix.dependency-versions}}
+                  dependency-versions: highest
 
             - name: Lint code
               run: composer lint
