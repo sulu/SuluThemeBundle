@@ -5,18 +5,19 @@ includes:
     - vendor/phpstan/phpstan-symfony/extension.neon
     - vendor/phpstan/phpstan-phpunit/extension.neon
     - vendor/phpstan/phpstan-phpunit/rules.neon
-    - vendor/thecodingmachine/phpstan-strict-rules/phpstan-strict-rules.neon
 
 parameters:
     paths:
         - .
+    parallel:
+        processTimeout: 300.0 
     level: max
     excludePaths:
-        - %currentWorkingDirectory%/DependencyInjection/Configuration.php
         - %currentWorkingDirectory%/vendor/*
         - %currentWorkingDirectory%/Tests/Application/*
     symfony:
-        container_xml_path: %rootDir%/../../../Tests/Application/var/cache/admin/dev/Sulu_Bundle_ThemeBundle_Tests_Application_KernelDevDebugContainer.xml
-        console_application_loader: Tests/phpstan/console-application.php
+        containerXmlPath: %rootDir%/../../../Tests/Application/var/cache/admin/dev/Sulu_Bundle_ThemeBundle_Tests_Application_KernelDevDebugContainer.xml
+        consoleApplicationLoader: Tests/phpstan/console-application.php
+        constantHassers: false
     doctrine:
         objectManagerLoader: Tests/phpstan/object-manager.php

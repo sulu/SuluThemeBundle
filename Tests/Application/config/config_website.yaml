@@ -3,3 +3,9 @@ imports:
 
 framework:
     router: { resource: "%kernel.project_dir%/config/routing_website.yaml" }
+
+security:
+    firewalls:
+        main:
+            pattern: ^/
+            lazy: true

@@ -16,6 +16,7 @@ namespace Sulu\Bundle\ThemeBundle\Tests\Application;
 use Sulu\Bundle\TestBundle\Kernel\SuluTestKernel;
 use Sulu\Bundle\ThemeBundle\SuluThemeBundle;
 use Sylius\Bundle\ThemeBundle\SyliusThemeBundle;
+use Symfony\Bundle\SecurityBundle\SecurityBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
 class Kernel extends SuluTestKernel
@@ -27,13 +28,17 @@ class Kernel extends SuluTestKernel
 
     public function registerBundles(): iterable
     {
-        return \array_merge(
-            parent::registerBundles(),
-            [
-                new SyliusThemeBundle(),
-                new SuluThemeBundle(),
-            ]
-        );
+        $bundles = [
+            new SyliusThemeBundle(),
+            new SuluThemeBundle(),
+        ];
+
+        // Register SecurityBundle for website context (already registered for admin in parent)
+        if (self::CONTEXT_WEBSITE === $this->getContext()) {
+            $bundles[] = new SecurityBundle();
+        }
+
+        return \array_merge(parent::registerBundles(), $bundles);
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader): void
@@ -41,6 +46,19 @@ class Kernel extends SuluTestKernel
         parent::registerContainerConfiguration($loader);
 
         $loader->load(__DIR__ . '/config/config_' . $this->getContext() . '.yaml');
+
+        $bundles = $this->registerBundles();
+        $hasMassiveSearchBundle = false;
+        foreach ($bundles as $bundle) {
+            if ($bundle instanceof \Massive\Bundle\SearchBundle\MassiveSearchBundle) {
+                $hasMassiveSearchBundle = true;
+                break;
+            }
+        }
+
+        if ($hasMassiveSearchBundle) {
+            $loader->load(__DIR__ . '/config/config_massive_search.yaml');
+        }
     }
 
     protected function getKernelParameters(): array
