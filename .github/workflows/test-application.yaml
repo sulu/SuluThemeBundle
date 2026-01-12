@@ -77,6 +77,10 @@ jobs:
               # testing lowest versions.
               run: composer remove "*php-cs-fixer*" "*phpstan*" "*rector*" --dev --no-update
 
+            - name: "Ensuring the tests also run with jackalope<2"
+              if: ${{ matrix.dependency-versions == 'lowest' }}
+              run: composer require jackalope/jackalope-doctrine-dbal:">=1.6" --no-update
+
             - name: Install composer dependencies
               uses: ramsey/composer-install@v2
               with:
