@@ -19,6 +19,9 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class SuluThemeBundle extends Bundle
 {
+    /**
+     * @internal this method is not part of the public API and should only be called by the Symfony framework classes
+     */
     public function build(ContainerBuilder $container): void
     {
         parent::build($container);
