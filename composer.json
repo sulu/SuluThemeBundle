@@ -15,7 +15,7 @@
     ],
     "require": {
         "php": "^8.2",
-        "sulu/sulu": "^2.6.10 || ^2.6@dev || ^3.0 || ^3.0@dev",
+        "sulu/sulu": "^2.6.10 || ^3.0 || ^3.0.1@dev",
         "symfony/config": "^5.4 || ^6.4 || ^7.0",
         "symfony/dependency-injection": "^5.4 || ^6.4 || ^7.0",
         "symfony/http-kernel": "^5.4 || ^6.4 || ^7.0",
