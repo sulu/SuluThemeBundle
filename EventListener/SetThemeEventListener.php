@@ -21,7 +21,10 @@ use Sylius\Bundle\ThemeBundle\Repository\ThemeRepositoryInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 /**
- * Listener which applies the configured theme.
+ * @internal no backwards compatibility promise is given for this class as it heavily depends on how
+ *           the SyliusThemeBundle works and might need adjustments when the SyliusThemeBundle or Sulu changes
+ *
+ * @final
  */
 class SetThemeEventListener
 {

@@ -18,6 +18,11 @@ use Sylius\Bundle\ThemeBundle\Repository\ThemeRepositoryInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
+ * @internal No backwards compatibility promise is given for this class.
+ *           Create your own compiler pass if you need any modifications.
+ *
+ * @final
+ *
  * This compiler pass loads all image formats defined in the configuration files in all the themes.
  */
 class ImageFormatCompilerPass extends AbstractImageFormatCompilerPass
