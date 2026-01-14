@@ -19,7 +19,6 @@ use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
- *
  * @internal this class is not part of the public API and should only be called by the Symfony framework classes
  *
  * @final
