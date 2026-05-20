@@ -35,6 +35,11 @@ class ImageFormatCompilerPassTest extends TestCase
      */
     private $container;
 
+    /**
+     * @var ImageFormatCompilerPass
+     */
+    private $compilerPass;
+
     protected function setUp(): void
     {
         $this->themeRepository = $this->prophesize(ThemeRepositoryInterface::class);
@@ -43,6 +48,8 @@ class ImageFormatCompilerPassTest extends TestCase
         $this->container->setParameter('sulu_media.format_manager.default_imagine_options', []);
         $this->container->setParameter('kernel.bundles', []);
         $this->container->set('sylius.repository.theme', $this->themeRepository->reveal());
+
+        $this->compilerPass = new ImageFormatCompilerPass();
     }
 
     public function testGetFiles(): void
@@ -57,13 +64,12 @@ class ImageFormatCompilerPassTest extends TestCase
             ->willReturn([$theme->reveal()])
             ->shouldBeCalled();
 
-        $compilerPass = new ImageFormatCompilerPass();
-        $reflectionMethod = new \ReflectionMethod(ImageFormatCompilerPass::class, 'getFiles');
-        $reflectionMethod->setAccessible(true);
+        $this->compilerPass->process($this->container);
 
-        $this->assertSame(
-            ['Tests/Application/theme/config/image-formats.xml'],
-            $reflectionMethod->invoke($compilerPass, $this->container)
-        );
+        /** @var array<string, mixed> $formats */
+        $formats = $this->container->getParameter('sulu_media.image.formats');
+
+        $this->assertCount(1, $formats);
+        $this->assertArrayHasKey('600x', $formats);
     }
 }
