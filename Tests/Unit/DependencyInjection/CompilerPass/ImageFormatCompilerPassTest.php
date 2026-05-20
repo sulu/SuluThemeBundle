@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sulu\Bundle\ThemeBundle\Tests\Unit\DependencyInjection\CompilerPass;
 
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Sulu\Bundle\ThemeBundle\DependencyInjection\CompilerPass\ImageFormatCompilerPass;
 use Sylius\Bundle\ThemeBundle\Model\ThemeInterface;
@@ -22,8 +23,10 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class ImageFormatCompilerPassTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
-     * @var ThemeRepositoryInterface|ObjectProphecy
+     * @var ObjectProphecy<ThemeRepositoryInterface>
      */
     private $themeRepository;
 
@@ -31,11 +34,6 @@ class ImageFormatCompilerPassTest extends TestCase
      * @var ContainerBuilder
      */
     private $container;
-
-    /**
-     * @var ImageFormatCompilerPass
-     */
-    private $compilerPass;
 
     protected function setUp(): void
     {
@@ -45,13 +43,10 @@ class ImageFormatCompilerPassTest extends TestCase
         $this->container->setParameter('sulu_media.format_manager.default_imagine_options', []);
         $this->container->setParameter('kernel.bundles', []);
         $this->container->set('sylius.repository.theme', $this->themeRepository->reveal());
-
-        $this->compilerPass = new ImageFormatCompilerPass();
     }
 
     public function testGetFiles(): void
     {
-        /** @var ThemeInterface|ObjectProphecy $theme */
         $theme = $this->prophesize(ThemeInterface::class);
         $theme->getPath()
             ->willReturn('Tests/Application/theme')
@@ -62,12 +57,13 @@ class ImageFormatCompilerPassTest extends TestCase
             ->willReturn([$theme->reveal()])
             ->shouldBeCalled();
 
-        $this->compilerPass->process($this->container);
+        $compilerPass = new ImageFormatCompilerPass();
+        $reflectionMethod = new \ReflectionMethod(ImageFormatCompilerPass::class, 'getFiles');
+        $reflectionMethod->setAccessible(true);
 
-        $formats = $this->container->getParameter('sulu_media.image.formats');
-
-        $this->assertCount(1, $formats);
-        // @phpstan-ignore-next-line
-        $this->assertArrayHasKey('600x', $formats);
+        $this->assertSame(
+            ['Tests/Application/theme/config/image-formats.xml'],
+            $reflectionMethod->invoke($compilerPass, $this->container)
+        );
     }
 }
