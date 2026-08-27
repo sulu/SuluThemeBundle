@@ -1,4 +1,5 @@
 /Tests/Application/var/*
+/Tests/Application/config/reference.php
 /vendor/
 .env.local
 .env.*.local
