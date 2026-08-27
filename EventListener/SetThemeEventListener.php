@@ -50,7 +50,7 @@ class SetThemeEventListener
     public function setActiveThemeOnRequest(RequestEvent $event): void
     {
         /** @var ?RequestAttributes $attributes */
-        $attributes = $event->getRequest()->get('_sulu');
+        $attributes = $event->getRequest()->attributes->get('_sulu');
 
         /** @var ?Webspace $webspace */
         $webspace = $attributes?->getAttribute('webspace');

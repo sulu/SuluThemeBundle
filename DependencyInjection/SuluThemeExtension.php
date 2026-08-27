@@ -27,11 +27,11 @@ class SuluThemeExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
-        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader = new Loader\PhpFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
         /** @var string $context */
         $context = $container->getParameter('sulu.context');
 
-        $loader->load(\sprintf('%s.xml', $context));
+        $loader->load(\sprintf('%s.php', $context));
     }
 }

@@ -39,6 +39,7 @@ $config->setRiskyAllowed(true)
             ->exclude('cache')
             ->exclude('Tests/Application/var/')
             ->exclude('Tests/reports/')
+            ->notPath('^Tests/Application/config/reference\\.php$')
             ->in(__DIR__)
     );
 
